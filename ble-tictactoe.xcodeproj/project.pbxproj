@@ -14,6 +14,10 @@
 		B23F6B4B1DF08947004CB8F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */; };
 		B23F6B561DF08947004CB8F9 /* ble_tictactoeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B551DF08947004CB8F9 /* ble_tictactoeTests.swift */; };
 		B23F6B611DF08947004CB8F9 /* ble_tictactoeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B601DF08947004CB8F9 /* ble_tictactoeUITests.swift */; };
+		B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */; };
+		B23F6B721DF091C1004CB8F9 /* o@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B701DF091C1004CB8F9 /* o@2x.png */; };
+		B23F6B731DF091C1004CB8F9 /* x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B711DF091C1004CB8F9 /* x@2x.png */; };
+		B2811D0C1DF23CB300B66378 /* DeviceScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0B1DF23CB300B66378 /* DeviceScan.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		B23F6B5C1DF08947004CB8F9 /* ble-tictactoeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ble-tictactoeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B23F6B601DF08947004CB8F9 /* ble_tictactoeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ble_tictactoeUITests.swift; sourceTree = "<group>"; };
 		B23F6B621DF08947004CB8F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSearchViewController.swift; sourceTree = "<group>"; };
+		B23F6B701DF091C1004CB8F9 /* o@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "o@2x.png"; sourceTree = "<group>"; };
+		B23F6B711DF091C1004CB8F9 /* x@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x@2x.png"; sourceTree = "<group>"; };
+		B2811D0B1DF23CB300B66378 /* DeviceScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceScan.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,11 +105,15 @@
 		B23F6B3F1DF08947004CB8F9 /* ble-tictactoe */ = {
 			isa = PBXGroup;
 			children = (
+				B23F6B701DF091C1004CB8F9 /* o@2x.png */,
+				B23F6B711DF091C1004CB8F9 /* x@2x.png */,
 				B23F6B401DF08947004CB8F9 /* AppDelegate.swift */,
 				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
+				B2811D0B1DF23CB300B66378 /* DeviceScan.swift */,
 				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
 				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
 				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
+				B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */,
 				B23F6B4C1DF08947004CB8F9 /* Info.plist */,
 			);
 			path = "ble-tictactoe";
@@ -232,6 +244,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23F6B721DF091C1004CB8F9 /* o@2x.png in Resources */,
+				B23F6B731DF091C1004CB8F9 /* x@2x.png in Resources */,
 				B23F6B4B1DF08947004CB8F9 /* LaunchScreen.storyboard in Resources */,
 				B23F6B481DF08947004CB8F9 /* Assets.xcassets in Resources */,
 				B23F6B461DF08947004CB8F9 /* Main.storyboard in Resources */,
@@ -259,7 +273,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2811D0C1DF23CB300B66378 /* DeviceScan.swift in Sources */,
 				B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */,
+				B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */,
 				B23F6B411DF08947004CB8F9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +521,7 @@
 				B23F6B671DF08947004CB8F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B23F6B681DF08947004CB8F9 /* Build configuration list for PBXNativeTarget "ble-tictactoeTests" */ = {
 			isa = XCConfigurationList;
@@ -513,6 +530,7 @@
 				B23F6B6A1DF08947004CB8F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B23F6B6B1DF08947004CB8F9 /* Build configuration list for PBXNativeTarget "ble-tictactoeUITests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +539,7 @@
 				B23F6B6D1DF08947004CB8F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
