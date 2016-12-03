@@ -28,11 +28,7 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
         value:nil,
         permissions: .readable)
     
-    var PlayerMoveCharacteristic = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write, .read, .notify],
-    
-                                                           
-                                                           value:nil,
-    permissions: [.readable, .writeable])
+    var PlayerMoveCharacteristic = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write, .read, .notify], value:nil, permissions: [.readable, .writeable])
     
     var GameStatusCharacteristic = CBMutableCharacteristic(type: GameStatusCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
@@ -41,9 +37,6 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
         super.init()
         self.peripheral = peripheral
         self.peripheral?.delegate = self
-        
-        BSChar.insert(CBCharacteristicProperties.read)
-        BSChar.insert(CBCharacteristicProperties.write)
         
     }
     
