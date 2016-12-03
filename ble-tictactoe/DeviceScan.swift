@@ -15,6 +15,11 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
     fileprivate var centralManager: CBCentralManager?
     fileprivate var peripheralFound: CBPeripheral?
     
+    var service: BTService? {
+    
+    
+    }
+    
     //Initializing Central Manager
     override init() {
         super.init()
@@ -58,6 +63,11 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
             break
         }
     }
+    
+    func clearDevices() {
+    
+    
+    }
         
         
         /*!
@@ -75,8 +85,10 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
          *  @seealso            CBCentralManagerRestoredStateScanOptionsKey;
          *
          */
-        optional public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any])
-        
+    optional public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+    
+    
+    }
         
         /*!
          *  @method centralManager:didDiscoverPeripheral:advertisementData:RSSI:
