@@ -20,6 +20,8 @@ let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
 
 let BLEServiceChangedStatusNotification = "kBLEServiceChangedStatusNotification"
 
+var CurrentGame = TicTacToeBoard()
+
 class TicTacToeService: NSObject, CBPeripheralDelegate {
     
     var peripheral: CBPeripheral?
@@ -88,7 +90,31 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
         
         if characteristic.uuid == PlayerMoveCharacteristic {
             // Convert the revived NSData to array of signed 16 bit values
-            let byteWritten = characteristic.value
+            guard let byteWritten = characteristic.value else {
+                print("Null Data Received")
+                //reprompt?
+                return
+            }
+            
+            //single byte of position in 0-8 array
+            let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
+            
+            //inputting board coord
+            if(byteInt < 0 || byteInt > 8) {
+                print("Input out of range. 1 for player X, 2 for player O")
+                //reprompt?
+                return
+            }
+            
+            //update game
+            CurrentGame.playerMove(isPlayerX: CurrentGame.isPlayerX, coord: Int(byteInt))
+            CurrentGame.checkGameStatus()
+            
+            //write to characteristic
+            // board state, game status
+            
+            
+            
             
             
             
