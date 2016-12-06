@@ -90,7 +90,7 @@ class TicTacToeViewController: UIViewController {
                 
                 //check game status
                 checkGameStatus()
-                self.isPlayerX = !isPlayerX
+                isPlayerX = !isPlayerX
                 
                 //write to characteristics
                 //board state, gamestatus
