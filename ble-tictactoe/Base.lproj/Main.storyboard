@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Adg-9r-5c5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="knm-6K-2EH">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Tic Tac Toe View Controller-->
         <scene sceneID="Bao-zG-sHY">
             <objects>
-                <viewController id="Adg-9r-5c5" sceneMemberID="viewController">
+                <viewController id="Adg-9r-5c5" customClass="TicTacToeViewController" customModule="ble_tictactoe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0Ys-yd-dtg"/>
                         <viewControllerLayoutGuide type="bottom" id="qHJ-vT-7Fs"/>
@@ -151,6 +151,17 @@
                             <constraint firstItem="G7H-aS-CsS" firstAttribute="leading" secondItem="Ikn-88-I7U" secondAttribute="trailing" constant="4" id="zEB-Ch-da1"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="space0" destination="kPc-he-tde" id="dzu-MH-FON"/>
+                        <outlet property="space1" destination="5n7-1a-d7y" id="wel-Mz-JUa"/>
+                        <outlet property="space2" destination="G7H-aS-CsS" id="mTU-qZ-Cww"/>
+                        <outlet property="space3" destination="V5K-6E-qii" id="41O-at-h0I"/>
+                        <outlet property="space4" destination="BcZ-ub-WMH" id="fhE-cw-oot"/>
+                        <outlet property="space5" destination="DLQ-wy-fhU" id="hbl-e3-lOI"/>
+                        <outlet property="space6" destination="j6T-PJ-LWa" id="W2L-9n-wy3"/>
+                        <outlet property="space7" destination="u2g-La-fUV" id="O0I-Zh-Z3q"/>
+                        <outlet property="space8" destination="brT-ea-RAY" id="4fw-ll-JD0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8m-Ld-OUu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

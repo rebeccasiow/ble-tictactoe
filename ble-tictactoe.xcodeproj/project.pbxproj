@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2005F131DF635FD0080F481 /* TicTacToeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */; };
 		B23F6B411DF08947004CB8F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B401DF08947004CB8F9 /* AppDelegate.swift */; };
 		B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B421DF08947004CB8F9 /* ViewController.swift */; };
 		B23F6B461DF08947004CB8F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B441DF08947004CB8F9 /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicTacToeViewController.swift; sourceTree = "<group>"; };
 		B23F6B3D1DF08947004CB8F9 /* ble-tictactoe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ble-tictactoe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B23F6B401DF08947004CB8F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B23F6B421DF08947004CB8F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				B2811D0D1DF2433100B66378 /* TicTacToeService.swift */,
 				B2811D0F1DF4BA1800B66378 /* TicTacToeBoard.swift */,
 				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
+				B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */,
 				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
 				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
 				B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */,
@@ -283,6 +286,7 @@
 				B2811D101DF4BA1800B66378 /* TicTacToeBoard.swift in Sources */,
 				B2811D0E1DF2433100B66378 /* TicTacToeService.swift in Sources */,
 				B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */,
+				B2005F131DF635FD0080F481 /* TicTacToeViewController.swift in Sources */,
 				B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */,
 				B23F6B411DF08947004CB8F9 /* AppDelegate.swift in Sources */,
 			);

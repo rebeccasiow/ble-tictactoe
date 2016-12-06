@@ -8,19 +8,19 @@
 
 import UIKit
 
+enum GameStatus {
+    case notStarted
+    case inProgress
+    case playerXwin
+    case playerOwin
+    case tie
+}
+
 class TicTacToeBoard {
     
     var spaces = [Int?]()
     var isPlayerX: Bool = true
     var status: GameStatus = GameStatus.notStarted
-
-    enum GameStatus {
-        case notStarted
-        case inProgress
-        case playerXwin
-        case playerOwin
-        case tie
-    }
 
     
     func playerMove(isPlayerX: Bool, coord: Int){
@@ -47,7 +47,7 @@ class TicTacToeBoard {
             //write to characteristics
             //board state, gamestatus
             
-            
+            moveNotif = true
             
         }
     }

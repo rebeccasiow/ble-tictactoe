@@ -22,6 +22,8 @@ let BLEServiceChangedStatusNotification = "kBLEServiceChangedStatusNotification"
 
 var CurrentGame = TicTacToeBoard()
 
+var moveNotif = false
+
 class TicTacToeService: NSObject, CBPeripheralDelegate {
     
     var peripheral: CBPeripheral?
@@ -116,7 +118,7 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
             
             
             
-            
+            moveNotif = true
             
             //parse the data received and display where you want
             

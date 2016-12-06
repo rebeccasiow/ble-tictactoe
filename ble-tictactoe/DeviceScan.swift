@@ -9,8 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-let deviceDis
-
 
 class DeviceScan: NSObject, CBCentralManagerDelegate {
 
