@@ -9,8 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-
-class DeviceScan: NSObject, CBCentralManagerDelegate {
+class DeviceScanCentral: NSObject, CBCentralManagerDelegate {
 
     fileprivate var centralManager: CBCentralManager?
     fileprivate var peripheralFound: CBPeripheral?
@@ -19,6 +18,7 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
     
     //Initializing Central Manager
     override init() {
+        print("DeviceScan init")
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -38,6 +38,8 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
          *
          */
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        print("centralManagerDidUpdateState")
+
         switch (central.state) {
         case .poweredOff:
             self.clearDevices()
@@ -51,6 +53,7 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
             break
             
         case .poweredOn:
+            print("centralManagerDidUpdateState")
             self.startScanning()
             
         case .resetting:
@@ -114,14 +117,21 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
+        print("centralManager: didDiscover")
+        
         //check peripheral validity
         if((peripheral.name == nil) || (peripheral.name == "") ) {
             return
+            
         }
         
         //if there isn't a peripheral, connect
         
         if ((self.peripheralFound == nil) || (self.peripheralFound?.state == CBPeripheralState.disconnected)) {
+            
+            print("centralManager: didDiscover connect to peripheral")
+
+            
             // Retain the peripheral before trying to connect
             self.peripheralFound = peripheral
             
@@ -144,6 +154,8 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
          */
         func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
             
+            print("centralManager: didConnect")
+
             //Instanciate TTTService
             if (peripheral == self.peripheralFound) {
                 self.TicTacToeservice = TicTacToeService(initWithPeripheral: peripheral)
@@ -152,7 +164,7 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
             // Stop scanning for new devices
             central.stopScan()
 
-        
+                
         }
         
         
@@ -168,6 +180,9 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
          *
          */
         func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+            
+            print("centralManager: didFailToConnect")
+
             
             self.clearDevices()
             
@@ -187,6 +202,8 @@ class DeviceScan: NSObject, CBCentralManagerDelegate {
          *
          */
         func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+            
+            print("centralManager: didDisconnectPeripheral")
             
             // See if it was our peripheral that disconnected
             if (peripheral == self.peripheralFound) {

@@ -9,18 +9,19 @@
 import Foundation
 import CoreBluetooth
 
+
 /**
  Creating Custom UUIDs for our TicTacToe Service
  **/
 
-let TicTacToeServiceUUID = CBUUID(string: "6BC2F6D4-570C-4709-81FD-3535F128CAD7")
-let BoardStateCharUUID = CBUUID(string: "994416DF-115E-406E-AE40-DD4261D7FCAC")
-let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
-let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
+//let TicTacToeServiceUUID = CBUUID(string: "6BC2F6D4-570C-4709-81FD-3535F128CAD7")
+//let BoardStateCharUUID = CBUUID(string: "994416DF-115E-406E-AE40-DD4261D7FCAC")
+//let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
+//let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
+//
+//let BLEServiceChangedStatusNotification = "kBLEServiceChangedStatusNotification"
 
-let BLEServiceChangedStatusNotification = "kBLEServiceChangedStatusNotification"
-
-var CurrentGame = TicTacToeBoard()
+//var CurrentGame = TicTacToeBoard()
 
 var moveNotif = false
 
@@ -50,6 +51,9 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        
+        print("peripheral: didDiscoverServices")
+
         
         // List of Characteristic UUIDs
         let uuidList: [CBUUID] = [BoardStateCharUUID, PlayerMoveCharUUID, GameStatusCharUUID]
@@ -89,6 +93,8 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        print("peripheral: didUpdateValueFor")
+
         
         if characteristic.uuid == PlayerMoveCharacteristic {
             // Convert the revived NSData to array of signed 16 bit values
@@ -109,8 +115,8 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
             }
             
             //update game
-            CurrentGame.playerMove(isPlayerX: CurrentGame.isPlayerX, coord: Int(byteInt))
-            CurrentGame.checkGameStatus()
+            //CurrentGame.playerMove(isPlayerX: CurrentGame.isPlayerX, coord: Int(byteInt))
+            //CurrentGame.checkGameStatus()
             
             //write to characteristic
             // board state, game status
@@ -129,6 +135,9 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        
+        print("peripheral: didDiscoverCharacteristicsFor")
+        
         if (peripheral != self.peripheral) {
             // Wrong Peripheral
             return
@@ -160,4 +169,5 @@ class TicTacToeService: NSObject, CBPeripheralDelegate {
             }
         }
     }
+    
 }

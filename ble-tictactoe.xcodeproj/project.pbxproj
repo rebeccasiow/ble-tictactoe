@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B2005F131DF635FD0080F481 /* TicTacToeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */; };
+		B235D7361DF7931900790881 /* DeviceScanPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B235D7351DF7931900790881 /* DeviceScanPeripheral.swift */; };
+		B235D7381DF7A39B00790881 /* TicTacToeBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B235D7371DF7A39B00790881 /* TicTacToeBoard.swift */; };
 		B23F6B411DF08947004CB8F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B401DF08947004CB8F9 /* AppDelegate.swift */; };
 		B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B421DF08947004CB8F9 /* ViewController.swift */; };
 		B23F6B461DF08947004CB8F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B441DF08947004CB8F9 /* Main.storyboard */; };
@@ -18,7 +20,7 @@
 		B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */; };
 		B23F6B721DF091C1004CB8F9 /* o@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B701DF091C1004CB8F9 /* o@2x.png */; };
 		B23F6B731DF091C1004CB8F9 /* x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B711DF091C1004CB8F9 /* x@2x.png */; };
-		B2811D0C1DF23CB300B66378 /* DeviceScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0B1DF23CB300B66378 /* DeviceScan.swift */; };
+		B2811D0C1DF23CB300B66378 /* DeviceScanCentral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */; };
 		B2811D0E1DF2433100B66378 /* TicTacToeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0D1DF2433100B66378 /* TicTacToeService.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicTacToeViewController.swift; sourceTree = "<group>"; };
+		B235D7351DF7931900790881 /* DeviceScanPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceScanPeripheral.swift; sourceTree = "<group>"; };
+		B235D7371DF7A39B00790881 /* TicTacToeBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicTacToeBoard.swift; sourceTree = "<group>"; };
 		B23F6B3D1DF08947004CB8F9 /* ble-tictactoe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ble-tictactoe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B23F6B401DF08947004CB8F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B23F6B421DF08947004CB8F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +61,7 @@
 		B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSearchViewController.swift; sourceTree = "<group>"; };
 		B23F6B701DF091C1004CB8F9 /* o@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "o@2x.png"; sourceTree = "<group>"; };
 		B23F6B711DF091C1004CB8F9 /* x@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x@2x.png"; sourceTree = "<group>"; };
-		B2811D0B1DF23CB300B66378 /* DeviceScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceScan.swift; sourceTree = "<group>"; };
+		B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceScanCentral.swift; sourceTree = "<group>"; };
 		B2811D0D1DF2433100B66378 /* TicTacToeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicTacToeService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,11 +116,13 @@
 				B23F6B701DF091C1004CB8F9 /* o@2x.png */,
 				B23F6B711DF091C1004CB8F9 /* x@2x.png */,
 				B23F6B401DF08947004CB8F9 /* AppDelegate.swift */,
-				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
-				B2811D0B1DF23CB300B66378 /* DeviceScan.swift */,
-				B2811D0D1DF2433100B66378 /* TicTacToeService.swift */,
 				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
+				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
+				B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */,
+				B235D7351DF7931900790881 /* DeviceScanPeripheral.swift */,
+				B2811D0D1DF2433100B66378 /* TicTacToeService.swift */,
 				B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */,
+				B235D7371DF7A39B00790881 /* TicTacToeBoard.swift */,
 				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
 				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
 				B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */,
@@ -211,6 +217,7 @@
 				TargetAttributes = {
 					B23F6B3C1DF08947004CB8F9 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = YCDC69KK4X;
 						ProvisioningStyle = Automatic;
 					};
 					B23F6B501DF08947004CB8F9 = {
@@ -279,12 +286,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2811D0C1DF23CB300B66378 /* DeviceScan.swift in Sources */,
+				B2811D0C1DF23CB300B66378 /* DeviceScanCentral.swift in Sources */,
 				B2811D0E1DF2433100B66378 /* TicTacToeService.swift in Sources */,
 				B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */,
 				B2005F131DF635FD0080F481 /* TicTacToeViewController.swift in Sources */,
 				B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */,
 				B23F6B411DF08947004CB8F9 /* AppDelegate.swift in Sources */,
+				B235D7361DF7931900790881 /* DeviceScanPeripheral.swift in Sources */,
+				B235D7381DF7A39B00790881 /* TicTacToeBoard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,9 +445,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YCDC69KK4X;
 				INFOPLIST_FILE = "ble-tictactoe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "wustl.ble-tictactoe";
+				PRODUCT_BUNDLE_IDENTIFIER = "wustl.ble-tictactoebecca";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -448,9 +458,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YCDC69KK4X;
 				INFOPLIST_FILE = "ble-tictactoe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "wustl.ble-tictactoe";
+				PRODUCT_BUNDLE_IDENTIFIER = "wustl.ble-tictactoebecca";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
