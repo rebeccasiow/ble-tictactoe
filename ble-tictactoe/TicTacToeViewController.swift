@@ -10,46 +10,51 @@ import UIKit
 
 class TicTacToeViewController: UIViewController {
 
-    @IBOutlet weak var space0: UIImageView!
+
+    @IBOutlet weak var space7: UIButton!
+    @IBOutlet weak var space8: UIButton!
+    @IBOutlet weak var space9: UIButton!
     
-    @IBOutlet weak var space1: UIImageView!
+    @IBOutlet weak var space4: UIButton!
+    @IBOutlet weak var space5: UIButton!
+    @IBOutlet weak var space6: UIButton!
     
-    @IBOutlet weak var space2: UIImageView!
+    @IBOutlet weak var space1: UIButton!
+    @IBOutlet weak var space2: UIButton!
+    @IBOutlet weak var space3: UIButton!
+
     
-    @IBOutlet weak var space3: UIImageView!
+
+    @IBAction func playerMoved(_ sender: UIButton) {
+        print("Button Pressed")
+        
+        let moveSuccess: Bool = CurrentGame.playerMoved(index: UInt8(sender.tag), isPlayerXPlaying: false)
+        
+        if(moveSuccess) {
+            playerStatusMessage.text = "You placed a piece!"
+        } else {
+            playerStatusMessage.text = "Not Your Turn!"
+        }
+        
+    }
     
-    @IBOutlet weak var space4: UIImageView!
+    @IBOutlet weak var playerTurnLabel: UILabel!
     
-    @IBOutlet weak var space5: UIImageView!
+    @IBOutlet weak var playerStatusMessage: UILabel!
     
-    @IBOutlet weak var space6: UIImageView!
-    
-    @IBOutlet weak var space7: UIImageView!
-    
-    @IBOutlet weak var space8: UIImageView!
-    
-    
-    
+    @IBOutlet weak var gameStatusMessage: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("TicTacToeViewController viewDidLoad")
-        
-        space0.image = nil
-        space1.image = nil
-        space2.image = nil
-        space3.image = nil
-        space4.image = nil
-        space5.image = nil
-        space6.image = nil
-        space7.image = nil
-        space8.image = nil
-        
         // Do any additional setup after loading the view.
         
         //while(CurrentGame.status !=  GameStatus.playerOwin) {
             
         //}
+        
+        playerStatusMessage.isHidden = true
+        
         
     }
     

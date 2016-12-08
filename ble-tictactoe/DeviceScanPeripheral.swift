@@ -44,7 +44,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     var advertisementData = [String:Any]()
     
     //Initializing Peripheral Manager
-     override init() {
+    override init() {
         super.init()
         
         print("DeviceScan Peripheral init")
@@ -73,7 +73,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     
-
+    
     public func peripheralManagerDidUpdateState(_ Peripheral: CBPeripheralManager) {
         print("peripheralManagerDidUpdateState")
         
@@ -117,7 +117,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, willRestoreState dict: [String : Any]) {
-    
+        
     }
     
     /*!
@@ -133,11 +133,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     public func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         print("peripheralManagerDidStartAdvertising")
         
-            if let error = error {
-                print("Failed… error: \(error)")
-                return
-            }
-            print("Succeeded!")
+        if let error = error {
+            print("Failed… error: \(error)")
+            return
+        }
+        print("Succeeded!")
         
     }
     
@@ -162,7 +162,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         }
         print("Service:\(service)")
         
-    
+        
     }
     
     
@@ -193,8 +193,8 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
-    
-    
+        
+        
     }
     
     
@@ -216,16 +216,19 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         
         let characteristicUUID = request.characteristic.uuid
         
-        if(characteristicUUID.isEqual(PlayerMoveCharacteristic)){
+        if(request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid)){
             request.value = PlayerMoveCharacteristic?.value
             peripheral.respond(to: request, withResult: .success)
         }
-        else if(characteristicUUID.isEqual(GameStatusCharacteristic)){
+        else if(request.characteristic.uuid.isEqual(GameStatusCharacteristic?.uuid)){
+            print("GameStatus Read Attempt")
             request.value = GameStatusCharacteristic?.value
             peripheral.respond(to: request, withResult: .success)
         }
-        else if(characteristicUUID.isEqual(BoardStateCharacteristic)){
+        else if(request.characteristic.uuid.isEqual(BoardStateCharacteristic?.uuid)){
+            print("BoardStateRead Attempt")
             payloadUpdate()
+            print("payload is now \(payload)")
             request.value = payload
             peripheral.respond(to: request, withResult: .success)
         }
@@ -250,7 +253,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         print("DidReceiveWrite")
         //Send Notification when it is peripheral's turn
         for request in requests {
-            if request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid) {
+            if (request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid)) {
                 guard let byteWritten = request.value else {
                     print("Null Data Received")
                     //reprompt?
@@ -258,7 +261,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                 }
                 
                 //single byte of position in 0-8 array
-//                let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
+                //                let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
                 
                 var byteInt: UInt8 = byteWritten.first!
                 print("byteInt: \(byteInt)")
@@ -271,7 +274,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                 }
                 
                 //update game
-                let moveSuccess = CurrentGame.playerMoved(index: byteInt, isPlayerXPlaying: false)
+                let moveSuccess = CurrentGame.playerMoved(index: byteInt, isPlayerXPlaying: true)
                 if(moveSuccess) {
                     PlayerMoveCharacteristic?.value = byteWritten
                     peripheral.respond(to: request, withResult: .success)
@@ -290,16 +293,16 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
             }
         }
     }
-        /*!
-         *  @method peripheralManagerIsReadyToUpdateSubscribers:
-         *
-         *  @param peripheral   The peripheral manager providing this update.
-         *
-         *  @discussion         This method is invoked after a failed call to @link updateValue:forCharacteristic:onSubscribedCentrals: @/link, when <i>peripheral</i> is again
-         *                      ready to send characteristic value updates.
-         *
-         */
-        
+    /*!
+     *  @method peripheralManagerIsReadyToUpdateSubscribers:
+     *
+     *  @param peripheral   The peripheral manager providing this update.
+     *
+     *  @discussion         This method is invoked after a failed call to @link updateValue:forCharacteristic:onSubscribedCentrals: @/link, when <i>peripheral</i> is again
+     *                      ready to send characteristic value updates.
+     *
+     */
+    
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
     }
     

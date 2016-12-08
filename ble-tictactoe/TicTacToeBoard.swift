@@ -29,27 +29,26 @@ class TicTacToeBoard {
     
     func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
         let realIndex:Int = Int(index)
-        if((spaces[realIndex]) == 0){
-            //Tell peripheral NO
-            return false
+        if((spaces[realIndex]) != UInt8(0)){
+            print("space is taken")
         }
         if(isPlayerX && isPlayerXPlaying) {
-            spaces[realIndex] = 1
+            spaces[realIndex] = UInt8(1)
+            print("Central move: board is now \(spaces)")
             isPlayerX = !isPlayerX
             //update view controller UI
             
             return true
         }
         else if( (!isPlayerX) && (!isPlayerXPlaying) ) {
-            spaces[realIndex] = 2
+            spaces[realIndex] = UInt8(2)
+            print("Peripheral move: board is now \(spaces)")
             isPlayerX = !isPlayerX
             //update view controller UI
             return true
         }
-        else {
-            // Nothing happens/Not Your Turn
-            return false
-        }
+        
+        return false
         
     }
     
@@ -129,5 +128,5 @@ class TicTacToeBoard {
         
     }
     
-
+    
 }
