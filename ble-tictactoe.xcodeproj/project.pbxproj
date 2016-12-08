@@ -20,8 +20,6 @@
 		B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */; };
 		B23F6B721DF091C1004CB8F9 /* o.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B701DF091C1004CB8F9 /* o.png */; };
 		B23F6B731DF091C1004CB8F9 /* x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23F6B711DF091C1004CB8F9 /* x.png */; };
-		B2811D0C1DF23CB300B66378 /* DeviceScanCentral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */; };
-		B2811D0E1DF2433100B66378 /* (X)TicTacToeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2811D0D1DF2433100B66378 /* (X)TicTacToeService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +59,6 @@
 		B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSearchViewController.swift; sourceTree = "<group>"; };
 		B23F6B701DF091C1004CB8F9 /* o.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = o.png; sourceTree = "<group>"; };
 		B23F6B711DF091C1004CB8F9 /* x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x.png; sourceTree = "<group>"; };
-		B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceScanCentral.swift; sourceTree = "<group>"; };
-		B2811D0D1DF2433100B66378 /* (X)TicTacToeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "(X)TicTacToeService.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,13 +86,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B22C694C1DF8D3110076D203 /* Delete */ = {
+		B21A20E31DF97FDE00EC899A /* App Setup */ = {
 			isa = PBXGroup;
 			children = (
-				B2811D0B1DF23CB300B66378 /* DeviceScanCentral.swift */,
-				B2811D0D1DF2433100B66378 /* (X)TicTacToeService.swift */,
+				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
+				B23F6B4C1DF08947004CB8F9 /* Info.plist */,
+				B23F6B401DF08947004CB8F9 /* AppDelegate.swift */,
+				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
+				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
+				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
+				B23F6B701DF091C1004CB8F9 /* o.png */,
+				B23F6B711DF091C1004CB8F9 /* x.png */,
 			);
-			name = Delete;
+			name = "App Setup";
 			sourceTree = "<group>";
 		};
 		B23F6B341DF08947004CB8F9 = {
@@ -122,19 +124,11 @@
 		B23F6B3F1DF08947004CB8F9 /* ble-tictactoe */ = {
 			isa = PBXGroup;
 			children = (
-				B23F6B401DF08947004CB8F9 /* AppDelegate.swift */,
-				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
-				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
-				B22C694C1DF8D3110076D203 /* Delete */,
+				B21A20E31DF97FDE00EC899A /* App Setup */,
 				B235D7351DF7931900790881 /* DeviceScanPeripheral.swift */,
 				B235D7371DF7A39B00790881 /* TicTacToeBoard.swift */,
 				B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */,
 				B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */,
-				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
-				B23F6B701DF091C1004CB8F9 /* o.png */,
-				B23F6B711DF091C1004CB8F9 /* x.png */,
-				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
-				B23F6B4C1DF08947004CB8F9 /* Info.plist */,
 			);
 			path = "ble-tictactoe";
 			sourceTree = "<group>";
@@ -294,8 +288,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2811D0C1DF23CB300B66378 /* DeviceScanCentral.swift in Sources */,
-				B2811D0E1DF2433100B66378 /* (X)TicTacToeService.swift in Sources */,
 				B23F6B431DF08947004CB8F9 /* ViewController.swift in Sources */,
 				B2005F131DF635FD0080F481 /* TicTacToeViewController.swift in Sources */,
 				B23F6B6F1DF08F99004CB8F9 /* DeviceSearchViewController.swift in Sources */,

@@ -10,11 +10,14 @@ import UIKit
 import CoreBluetooth
 
 /**
- TODO:
- 
- 1. Board logic
- 2. Writing to Characteristic
- 
+
+ TO-DO BEFORE IOT:
+ 1. Add comments to methods in all files
+ 3. Delete extraneous print statements and commented out code.
+ 4. (Optional) Maybe get rid of device screen on UI side, because Player X’s first move won’t get displayed on the board if you don’t open it up beforehand.
+ 5. Proofread, revise report writeup (“ble-tictactoe Writeup”) in final project google drive folder.
+ 6. TEST TEST TEST app if possible
+ 7. SUBMIT XCODE PROJECT AND WRITEUP (PDF FORM) TO BLACKBOARD. Include my name and WUSTL key pls (jeffreygu; 431184)
  
  **/
 
