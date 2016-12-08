@@ -29,7 +29,9 @@ let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
 let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
 
 var payload = Data(bytes: CurrentGame.spaces)
-var message = Data(bytes: [0, CurrentGame.isPlayerX ? 1:2, 1])    //1st: game status enum; 2nd: whose_turn; 3rd: who_am_i
+var message = Data(bytes: [UInt8(0), CurrentGame.isPlayerX ? UInt8(1):UInt8(2), UInt8(1)])    //1st: game status enum; 2nd: whose_turn; 3rd: who_am_i
+
+let PM_PM = "PMPM.NotificationKey"
 
 class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     
@@ -38,7 +40,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     var TicTacToeService:CBMutableService = CBMutableService(type: TicTacToeServiceUUID, primary: true)
     var BoardStateCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: BoardStateCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
-    var PlayerMoveCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write, .notify], value:nil, permissions: [.readable, .writeable])
+    var PlayerMoveCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write], value:nil, permissions: [.readable, .writeable])
     
     
     var GameStatusCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: GameStatusCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
@@ -56,8 +58,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         
         TicTacToeService.characteristics = [BoardStateCharacteristic!, PlayerMoveCharacteristic!, GameStatusCharacteristic!]
         
-        
-    }
+        NotificationCenter.default.addObserver(self, selector: #selector(DeviceScanPeripheral.updateBoard), name: NSNotification.Name(rawValue: PM_PM), object: nil)    }
     
     
     /*!
@@ -218,16 +219,16 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         
         let characteristicUUID = request.characteristic.uuid
         
-        if(request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid)){
+        if(characteristicUUID.isEqual(PlayerMoveCharacteristic?.uuid)){
             request.value = PlayerMoveCharacteristic?.value
             peripheral.respond(to: request, withResult: .success)
         }
-        else if(request.characteristic.uuid.isEqual(GameStatusCharacteristic?.uuid)){
+        else if(characteristicUUID.isEqual(GameStatusCharacteristic?.uuid)){
             print("GameStatus Read Attempt")
             request.value = GameStatusCharacteristic?.value
             peripheral.respond(to: request, withResult: .success)
         }
-        else if(request.characteristic.uuid.isEqual(BoardStateCharacteristic?.uuid)){
+        else if(characteristicUUID.isEqual(BoardStateCharacteristic?.uuid)){
             print("BoardStateRead Attempt")
             payloadUpdate()
             print("payload is now \(payload)")
@@ -265,11 +266,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                 //single byte of position in 0-8 array
                 //                let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
                 
-                var byteInt: UInt8 = byteWritten.first!
+                let byteInt: UInt8 = byteWritten.first!
                 print("byteInt: \(byteInt)")
                 
                 //inputting board coord
-                if(byteInt < 0 || byteInt > 8) {
+                if(byteInt < 1 || byteInt > 9) {
                     print("Input out of range. 1 for player X, 2 for player O")
                     //reprompt?
                     return
@@ -278,10 +279,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                 //update game
                 let moveSuccess = CurrentGame.playerMoved(index: byteInt, isPlayerXPlaying: true)
                 if(moveSuccess) {
-                    PlayerMoveCharacteristic?.value = byteWritten
+                    //PlayerMoveCharacteristic?.value = byteWritten
                     peripheral.respond(to: request, withResult: .success)
-                    payloadUpdate()
                     
+                    updateBoard()
+                    /*payloadUpdate()
                     if(peripheral.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
                         print("Board update success")
                         CurrentGame.checkGameStatus()
@@ -300,7 +302,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                     }
                     else {
                         print("Board char failed to update")
-                    }
+                    }*/
                 }
                 else {
                     peripheral.respond(to: request, withResult: .writeNotPermitted)
@@ -319,6 +321,9 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      */
     
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
+        //we implemented this because game status characteristic updates were not working
+        //try updating game status again
+        updateStatus()
     }
     
     //updates the uint8 array for boardstatechar
@@ -328,25 +333,73 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     }
     public func messageUpdate() {
         
-        var statusValue : UInt8
+        let turn: UInt8 = CurrentGame.isPlayerX ? UInt8(1):UInt8(2)
+        var statusValue: UInt8
+        
         
         switch CurrentGame.status {
         case GameStatus.notStarted:
-            statusValue = 0
+            statusValue = UInt8(0)
         case GameStatus.playerXwin:
-            statusValue = 1
+            statusValue = UInt8(1)
         case GameStatus.playerOwin:
-            statusValue = 2
+            statusValue = UInt8(2)
         case GameStatus.tie:
-            statusValue = 3
+            statusValue = UInt8(3)
         case GameStatus.inProgress:
-            statusValue = 4
+            statusValue = UInt8(4)
         default:
-            statusValue = 9 //unknown
+            statusValue = UInt8(9) //unknown
             break
         }
         
-        message = Data(bytes: [statusValue, CurrentGame.isPlayerX ? 1:2, 1])
+        print ("message update ... status value is \(statusValue) and it is player \(turn)'s turn")
+        message = Data(bytes: [statusValue, turn, UInt8(1)])
+    }
+    
+    public func updateBoard() {
+        
+        payloadUpdate()
+        if(thePeripheralManager.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
+            print("Board update success")
+            
+            updateStatus()
+//            CurrentGame.checkGameStatus()
+//            //check if need to update game status char:
+//            if (CurrentGame.statusChanged) {
+//                messageUpdate()
+//                if(thePeripheralManager.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
+//                    print("Game status updated to: \(CurrentGame.status)")
+//                    
+//                    //reset flag
+//                    CurrentGame.statusChanged = false
+//                }
+//                else {
+//                    print("Game status update fail")
+//                }
+//            }
+        }
+        else {
+            print("Board char failed to update")
+        }
+        
+    }
+    
+    public func updateStatus() {
+        CurrentGame.checkGameStatus()
+        //check if need to update game status char:
+        if (CurrentGame.statusChanged) {
+            messageUpdate()
+            if(thePeripheralManager.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
+                print("Game status updated to: \(CurrentGame.status)")
+                
+                //reset flag
+                CurrentGame.statusChanged = false
+            }
+            else {
+                print("Game status update fail")
+            }
+        }
     }
     
 }

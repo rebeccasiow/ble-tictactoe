@@ -8,7 +8,9 @@
 
 import UIKit
 
-var TTTVC = TicTacToeViewController()
+let TTTVC_CM = "TTTVC.CentralMovedNotificationKey"
+let TTTVC_GS = "TTTVC.GameStatusNotificationKey"
+
 class TicTacToeViewController: UIViewController {
 
 
@@ -76,12 +78,13 @@ class TicTacToeViewController: UIViewController {
         playerTurnLabel.isHidden = true
         appPlayerTurn.isHidden = true
         
+        NotificationCenter.default.addObserver(self, selector: #selector(TicTacToeViewController.centralPlayed), name: NSNotification.Name(rawValue: TTTVC_CM), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(TicTacToeViewController.updateGameStatusMessage), name: NSNotification.Name(rawValue: TTTVC_GS), object: nil)
     }
     
-    func updateGameStatusMessage(gs:GameStatus) {
-        
-        switch gs {
+    func updateGameStatusMessage() {
+        switch CurrentGame.status {
         case .inProgress:
             gameStatusMessage.text = "Game In Progress"
         case .notStarted:
@@ -93,10 +96,9 @@ class TicTacToeViewController: UIViewController {
         case .tie:
             gameStatusMessage.text = "Game Tie!"
         default:
-            gameStatusMessage.text = ""
+            gameStatusMessage.text = "???"
 
         }
-    
     }
     
     func playerMove(isPlayerX: Bool, coord: Int){
@@ -105,7 +107,10 @@ class TicTacToeViewController: UIViewController {
         
         }
     
-    func centralPlayed(index: Int) {
+    func centralPlayed() {
+        
+        let index:Int = CurrentGame.playerXLastMove
+        
         print("Central Played on Space \(index)")
         
         let button = self.view.viewWithTag(index) as! UIButton

@@ -10,10 +10,10 @@ import UIKit
 
 enum GameStatus {
     case notStarted
-    case inProgress
     case playerXwin
     case playerOwin
     case tie
+    case inProgress
 }
 
 var CurrentGame = TicTacToeBoard()
@@ -26,25 +26,34 @@ class TicTacToeBoard {
     var spaces : [UInt8] = [0,0,0,0,0,0,0,0,0]
     var isPlayerX: Bool = true
     var status: GameStatus = GameStatus.notStarted
+    var statusChanged: Bool = false
+    
+    var playerXLastMove: Int = 0
+//    var playerOLastMove: UInt8 = 0
     
     func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
         let realIndex:Int = Int(index)-1
         if((spaces[realIndex]) != UInt8(0)){
             print("space is taken")
         }
-        if(isPlayerX && isPlayerXPlaying) {
+        else if(isPlayerX && isPlayerXPlaying) {    //Central's move (Player X)
             spaces[realIndex] = UInt8(1)
             print("Central move: board is now \(spaces)")
             isPlayerX = !isPlayerX
-            //update view controller UI
             
+            playerXLastMove = Int(index)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_CM), object:nil) //update view controller UI
             return true
         }
-        else if( (!isPlayerX) && (!isPlayerXPlaying) ) {
+        else if( (!isPlayerX) && (!isPlayerXPlaying) ) {    //Peripheral's move (Player O)
             spaces[realIndex] = UInt8(2)
             print("Peripheral move: board is now \(spaces)")
             isPlayerX = !isPlayerX
-            //update view controller UI
+            
+//            playerOLastMove = index-1
+            NotificationCenter.default.post(name: Notification.Name(rawValue: PM_PM), object:nil)
+            
+            //view controller updates UI by itself
             return true
         }
         
@@ -74,6 +83,7 @@ class TicTacToeBoard {
         var oCount:Int = 0
         
         //check each row:
+        print("checking rows")
         for i in 0...2 {
             for j in 0...2 {
                 let realIndex:Int = i*3 + j
@@ -91,24 +101,34 @@ class TicTacToeBoard {
                     isFilled = false
                     
                     //since space not filled ... row not worth checking
-                    break
+                    //break
                 }
             }
             //check if row has winning combo
             if(xCount == 3) {
                 status = GameStatus.playerXwin
                 //TODO: write to characteristic
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+                statusChanged = true
+                return
             }
             else if(oCount==3) {
                 status = GameStatus.playerOwin
                 //TODO: write to characteristic
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+                statusChanged = true
+                return
             }
             //else zero out counts
             xCount = 0
             oCount = 0
         }
         
+        xCount = 0
+        oCount = 0
+        
         //check each column
+        print("checking columns")
         for m in 0...2 {
             for n in 0...2 {
                 let realIndex:Int = m + n*3
@@ -126,24 +146,34 @@ class TicTacToeBoard {
                     isFilled = false
                     
                     //since space not filled ... row not worth checking
-                    break
+                    //break
                 }
             }
             //check if row has winning combo
             if(xCount == 3) {
                 status = GameStatus.playerXwin
                 //TODO: write to characteristic
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+                statusChanged = true
+                return
             }
             else if(oCount==3) {
                 status = GameStatus.playerOwin
                 //TODO: write to characteristic
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+                statusChanged = true
+                return
             }
             //else zero out counts
             xCount = 0
             oCount = 0
         }
         
+        xCount = 0
+        oCount = 0
+        
         //check bottom left to top right diagonal (indices: 0 4 8)
+        print("checking diagonal 1")
         for p in 0...2 {
             let realIndex:Int = p*4
             let value:UInt8 = spaces[realIndex]
@@ -160,7 +190,7 @@ class TicTacToeBoard {
                 isFilled = false
                 
                 //since space not filled ... row not worth checking
-                break
+                //break
             }
         }
         
@@ -168,16 +198,23 @@ class TicTacToeBoard {
         if(xCount == 3) {
             status = GameStatus.playerXwin
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
         else if(oCount==3) {
             status = GameStatus.playerOwin
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
         //else zero out counts
         xCount = 0
         oCount = 0
         
         //check top left to bottom right diagonal (indices: 6 4 2)
+        print("checking diagonal 2")
         for q in 0...2 {
             let realIndex:Int = 2+q*2
             let value:UInt8 = spaces[realIndex]
@@ -194,7 +231,7 @@ class TicTacToeBoard {
                 isFilled = false
                 
                 //since space not filled ... row not worth checking
-                break
+                //break
             }
         }
         
@@ -202,10 +239,16 @@ class TicTacToeBoard {
         if(xCount == 3) {
             status = GameStatus.playerXwin
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
         else if(oCount==3) {
             status = GameStatus.playerOwin
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
         //else zero out counts
         xCount = 0
@@ -215,14 +258,22 @@ class TicTacToeBoard {
         
         //check for tie condition:
         if (isFilled) {
+            print ("tie game determined")
             status = GameStatus.tie
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
             
             //else game is still ongoing
         else if(status != GameStatus.inProgress) {
+            print ("setting game to in progress")
             status = GameStatus.inProgress
             //TODO: write to characteristic
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return
         }
         
     }
