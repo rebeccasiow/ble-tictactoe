@@ -9,18 +9,6 @@
 import UIKit
 import CoreBluetooth
 
-/**
-
- TO-DO BEFORE IOT:
- 1. Add comments to methods in all files
- 3. Delete extraneous print statements and commented out code.
- 4. (Optional) Maybe get rid of device screen on UI side, because Player X’s first move won’t get displayed on the board if you don’t open it up beforehand.
- 5. Proofread, revise report writeup (“ble-tictactoe Writeup”) in final project google drive folder.
- 6. TEST TEST TEST app if possible
- 7. SUBMIT XCODE PROJECT AND WRITEUP (PDF FORM) TO BLACKBOARD. Include my name and WUSTL key pls (jeffreygu; 431184)
- 
- **/
-
 
 /**
  TicTacToeService Setup: Creating Custom UUIDs for our TicTacToe Service
