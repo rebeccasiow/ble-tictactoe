@@ -23,7 +23,7 @@ import CoreBluetooth
 
 
 /**
- Creating Custom UUIDs for our TicTacToe Service
+ TicTacToeService Setup: Creating Custom UUIDs for our TicTacToe Service
  **/
 
 let TicTacToeServiceUUID = CBUUID(string: "6BC2F6D4-570C-4709-81FD-3535F128CAD7")
@@ -31,32 +31,53 @@ let BoardStateCharUUID = CBUUID(string: "994416DF-115E-406E-AE40-DD4261D7FCAC")
 let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
 let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
 
+/**
+ Storing values for Readable characteristics
+ - BoardStateCharacteristic: Sends an array of Unsigned Integers corresponding to the status of each board space.
+ - GameStatusCharacteristic: Sends the game status enum, who's turn it is, the symbol the player is assigned("X")
+ **/
 var payload = Data(bytes: CurrentGame.spaces)
 var message = Data(bytes: [UInt8(0), CurrentGame.isPlayerX ? UInt8(1):UInt8(2), UInt8(1)])    //1st: game status enum; 2nd: whose_turn; 3rd: who_am_i
 
+//Using NSNotificationCenter to inform the TicTacToeViewController about valid player moves from the central.
 let PM_PM = "PMPM.NotificationKey"
+
+
+/**
+ 
+ DeviceScanPeripheral
+ 
+ Class Overview: Configuration of the iOS app as the Peripheral Server,
+ whereby another device running LightBlue would connect as a Central.
+ The app broadcasts the TicTacToeService for LightBlue to discover and
+ connect to using the CBPeripheralManagerDelegate protocol.
+ 
+ **/
 
 class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     
     var thePeripheralManager: CBPeripheralManager!
     
+    /**Configuration of Service Characteristic Properties**/
+
     var TicTacToeService:CBMutableService = CBMutableService(type: TicTacToeServiceUUID, primary: true)
+    
     var BoardStateCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: BoardStateCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
     var PlayerMoveCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write], value:nil, permissions: [.readable, .writeable])
-    
     
     var GameStatusCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: GameStatusCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
     var advertisementData = [String:Any]()
     
-    //Initializing Peripheral Manager
+    /**Initializing Peripheral Manager**/
     override init() {
         super.init()
+        print("PeripheralManager init")
         
-        print("DeviceScan Peripheral init")
         thePeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
+        // Broadcast as TTTPeripheral
         advertisementData = [CBAdvertisementDataLocalNameKey: "TTTPeripheral", CBAdvertisementDataServiceUUIDsKey:[TicTacToeServiceUUID]]
         
         TicTacToeService.characteristics = [BoardStateCharacteristic!, PlayerMoveCharacteristic!, GameStatusCharacteristic!]
@@ -184,7 +205,6 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic){
-        //print("subscribed centrals: \( characteristic)")
     }
     
     
@@ -210,14 +230,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *  @param peripheral   The peripheral manager requesting this information.
      *  @param request      A <code>CBATTRequest</code> object.
      *
-     *  @discussion         This method is invoked when <i>peripheral</i> receives an ATT request for a characteristic with a dynamic value.
-     *                      For every invocation of this method, @link respondToRequest:withResult: @/link must be called.
-     *
-     *  @see                CBATTRequest
+     *  @discussion         Checks which characteristic is being read and relays data back.
      *
      */
+    
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
-        
         print("didReceiveRead")
         
         let characteristicUUID = request.characteristic.uuid
@@ -227,15 +244,14 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
             peripheral.respond(to: request, withResult: .success)
         }
         else if(characteristicUUID.isEqual(GameStatusCharacteristic?.uuid)){
-            print("GameStatus Read Attempt")
+            print("GameStatus Read")
             messageUpdate()
             request.value = message
             peripheral.respond(to: request, withResult: .success)
         }
         else if(characteristicUUID.isEqual(BoardStateCharacteristic?.uuid)){
-            print("BoardStateRead Attempt")
+            print("BoardState Read")
             payloadUpdate()
-            print("payload is now \(payload)")
             request.value = payload
             peripheral.respond(to: request, withResult: .success)
         }
@@ -256,57 +272,27 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
-        
         print("DidReceiveWrite")
-        //Send Notification when it is peripheral's turn
+
         for request in requests {
             if (request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid)) {
                 guard let byteWritten = request.value else {
                     print("Null Data Received")
-                    //reprompt?
                     return
                 }
-                
-                //single byte of position in 0-8 array
-                //                let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
                 
                 let byteInt: UInt8 = byteWritten.first!
                 print("byteInt: \(byteInt)")
                 
-                //inputting board coord
                 if(byteInt < 1 || byteInt > 9) {
                     print("Input out of range. 1 for player X, 2 for player O")
-                    //reprompt?
                     return
                 }
                 
-                //update game
                 let moveSuccess = CurrentGame.playerMoved(index: byteInt, isPlayerXPlaying: true)
                 if(moveSuccess) {
-                    //PlayerMoveCharacteristic?.value = byteWritten
                     peripheral.respond(to: request, withResult: .success)
-                    
                     updateBoard()
-                    /*payloadUpdate()
-                    if(peripheral.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
-                        print("Board update success")
-                        CurrentGame.checkGameStatus()
-                        //check if need to update game status char:
-                        if (CurrentGame.statusChanged) {
-                            messageUpdate()
-                            if(peripheral.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
-                                print("Game status updated to: \(CurrentGame.status)")
-                            }
-                            else {
-                                print("Game status update fail")
-                            }
-                            //reset flag
-                            CurrentGame.statusChanged = false
-                        }
-                    }
-                    else {
-                        print("Board char failed to update")
-                    }*/
                 }
                 else {
                     peripheral.respond(to: request, withResult: .writeNotPermitted)
@@ -325,22 +311,24 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      */
     
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
-        //we implemented this because game status characteristic updates were not working
-        //try updating game status again
-        print("game status char 2nd update attempt")
         updateStatus()
     }
     
-    //updates the uint8 array for boardstatechar
+    /**
+     Updates the UInt8 array for Board State Characteristic
+     **/
     public func payloadUpdate() {
-        print("board is now: \(CurrentGame.spaces)")
+        print("Board is now: \(CurrentGame.spaces)")
         payload = Data(bytes: CurrentGame.spaces)
     }
+    
+    /**
+     Updates the Game Status
+     **/
     public func messageUpdate() {
         
         let turn: UInt8 = CurrentGame.isPlayerX ? UInt8(1):UInt8(2)
         var statusValue: UInt8
-        
         
         switch CurrentGame.status {
         case GameStatus.notStarted:
@@ -362,42 +350,31 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         message = Data(bytes: [statusValue, turn, UInt8(1)])
     }
     
+    /**
+     Updates Board State Characteristic
+     **/
     public func updateBoard() {
         
         payloadUpdate()
         if(thePeripheralManager.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
-            print("Board update success")
+            print("Board Update Success")
             CurrentGame.checkGameStatus()
             updateStatus()
-//            CurrentGame.checkGameStatus()
-//            //check if need to update game status char:
-//            if (CurrentGame.statusChanged) {
-//                messageUpdate()
-//                if(thePeripheralManager.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
-//                    print("Game status updated to: \(CurrentGame.status)")
-//                    
-//                    //reset flag
-//                    CurrentGame.statusChanged = false
-//                }
-//                else {
-//                    print("Game status update fail")
-//                }
-//            }
         }
         else {
-            print("Board char failed to update")
+            print("Board Char Failed to Update")
         }
         
     }
     
+    /**
+     Updates Game Status Characteristic
+     **/
     public func updateStatus() {
-        //check if need to update game status char:
         if (CurrentGame.statusChanged) {
             messageUpdate()
             if(thePeripheralManager.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
                 print("Game status updated to: \(CurrentGame.status)")
-                
-                //reset flag
                 CurrentGame.statusChanged = false
             }
             else {
