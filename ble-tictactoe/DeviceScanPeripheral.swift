@@ -282,6 +282,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                     
                     if(peripheral.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
                         print("Board update success")
+                        CurrentGame.checkGameStatus()
                     }
                     else {
                         print("Board char failed to update")

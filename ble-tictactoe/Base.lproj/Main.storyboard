@@ -168,7 +168,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Your Turn!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fug-aa-SKn">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Your Turn!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fug-aa-SKn">
                                 <rect key="frame" x="53" y="551" width="269" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -192,10 +192,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5Y-xN-yEa">
+                                <rect key="frame" x="150" y="524" width="78" height="30"/>
+                                <state key="normal" title="Start Game"/>
+                                <connections>
+                                    <action selector="startGameButtonPressed:" destination="Adg-9r-5c5" eventType="touchUpInside" id="8td-DK-RJO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Fug-aa-SKn" firstAttribute="top" secondItem="Veu-FH-Mgq" secondAttribute="bottom" constant="38" id="0J9-B4-LMT"/>
+                            <constraint firstItem="U5Y-xN-yEa" firstAttribute="top" secondItem="VL4-zk-GKk" secondAttribute="bottom" constant="100" id="1RQ-eO-ADG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Fug-aa-SKn" secondAttribute="trailing" constant="37" id="1SH-FF-i6F"/>
                             <constraint firstItem="b6Q-ad-dFe" firstAttribute="leading" secondItem="DFF-4i-euL" secondAttribute="trailing" constant="3" id="3WC-qd-409"/>
                             <constraint firstItem="abv-o1-Kcu" firstAttribute="top" secondItem="Ikn-88-I7U" secondAttribute="bottom" constant="190" id="4IO-aw-nnb"/>
@@ -227,6 +235,7 @@
                             <constraint firstItem="ar2-xy-BzZ" firstAttribute="leading" secondItem="DFF-4i-euL" secondAttribute="trailing" constant="3" id="kq7-3b-4DT"/>
                             <constraint firstItem="Veu-FH-Mgq" firstAttribute="top" secondItem="zga-hb-HxS" secondAttribute="bottom" constant="68" id="mvL-nS-i9J"/>
                             <constraint firstItem="Zb0-QQ-QlS" firstAttribute="leading" secondItem="BQT-VQ-NJN" secondAttribute="leadingMargin" constant="9" id="qny-a8-dmu"/>
+                            <constraint firstItem="U5Y-xN-yEa" firstAttribute="leading" secondItem="BQT-VQ-NJN" secondAttribute="leadingMargin" constant="134" id="sWw-0T-gGl"/>
                             <constraint firstItem="FhV-6a-NvE" firstAttribute="leading" secondItem="Ikn-88-I7U" secondAttribute="trailing" constant="3" id="tsX-Dc-tLW"/>
                             <constraint firstItem="VL4-zk-GKk" firstAttribute="leading" secondItem="DFF-4i-euL" secondAttribute="trailing" constant="4" id="uKv-PI-jXl"/>
                             <constraint firstItem="ar2-xy-BzZ" firstAttribute="top" secondItem="6os-6S-oy5" secondAttribute="bottom" constant="12" id="ujO-8q-0RJ"/>
@@ -237,6 +246,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="appPlayerTurn" destination="Ymh-4U-3HN" id="iDa-h2-3TX"/>
                         <outlet property="gameStatusMessage" destination="abv-o1-Kcu" id="3zU-fT-7ld"/>
                         <outlet property="playerStatusMessage" destination="Fug-aa-SKn" id="2HK-M1-61h"/>
                         <outlet property="playerTurnLabel" destination="Veu-FH-Mgq" id="4FS-Cf-72g"/>
@@ -249,6 +259,7 @@
                         <outlet property="space7" destination="Zb0-QQ-QlS" id="si6-XR-QHj"/>
                         <outlet property="space8" destination="b6Q-ad-dFe" id="Whi-jm-2ip"/>
                         <outlet property="space9" destination="Fvb-jm-odY" id="6yT-YP-PKD"/>
+                        <outlet property="startGameButton" destination="U5Y-xN-yEa" id="Eiw-Yv-lLh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8m-Ld-OUu" userLabel="First Responder" sceneMemberID="firstResponder"/>

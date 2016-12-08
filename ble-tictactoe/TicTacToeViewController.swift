@@ -22,28 +22,38 @@ class TicTacToeViewController: UIViewController {
     @IBOutlet weak var space1: UIButton!
     @IBOutlet weak var space2: UIButton!
     @IBOutlet weak var space3: UIButton!
-
     
-
+    @IBOutlet weak var playerTurnLabel: UILabel!
+    
+    @IBOutlet weak var appPlayerTurn: UILabel!
+    @IBOutlet weak var playerStatusMessage: UILabel!
+    
+    @IBOutlet weak var gameStatusMessage: UILabel!
+    
+    @IBOutlet weak var startGameButton: UIButton!
     @IBAction func playerMoved(_ sender: UIButton) {
-        print("Button Pressed")
+        print("\(sender.tag) Button Pressed")
         
         let moveSuccess: Bool = CurrentGame.playerMoved(index: UInt8(sender.tag), isPlayerXPlaying: false)
         
         if(moveSuccess) {
+            sender.imageView?.image = UIImage(contentsOfFile: "x.png")
             playerStatusMessage.text = "You placed a piece!"
         } else {
             playerStatusMessage.text = "Not Your Turn!"
         }
         
     }
-    
-    @IBOutlet weak var playerTurnLabel: UILabel!
-    
-    @IBOutlet weak var playerStatusMessage: UILabel!
-    
-    @IBOutlet weak var gameStatusMessage: UILabel!
-    
+    @IBAction func startGameButtonPressed(_ sender: UIButton) {
+        startGameButton.isHidden = true
+        playerStatusMessage.isHidden = false
+        playerTurnLabel.isHidden = false
+        appPlayerTurn.isHidden = false
+        
+        
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         print("TicTacToeViewController viewDidLoad")
@@ -54,12 +64,17 @@ class TicTacToeViewController: UIViewController {
         //}
         
         playerStatusMessage.isHidden = true
-        
+        playerTurnLabel.isHidden = true
+        appPlayerTurn.isHidden = true
         
     }
     
+    func updateGameCharacteristics() {
+    
+    }
+    
     func playerMove(isPlayerX: Bool, coord: Int){
-
+        
         }
 
 

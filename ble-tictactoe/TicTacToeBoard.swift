@@ -28,7 +28,7 @@ class TicTacToeBoard {
     var status: GameStatus = GameStatus.notStarted
     
     func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
-        let realIndex:Int = Int(index)
+        let realIndex:Int = Int(index)-1
         if((spaces[realIndex]) != UInt8(0)){
             print("space is taken")
         }
@@ -58,75 +58,172 @@ class TicTacToeBoard {
     //else game still ongoing
     func checkGameStatus() {
         
-        let boardLen = spaces.count
+        //board ui layout:
+        //789
+        //456
+        //123
         
-        //012
-        //345
+        //board logic layout
         //678
+        //345
+        //012
         
-        if((spaces[0] == spaces[1] && spaces[1] == spaces[2])){
-            if(spaces[0] == 1) {
-                status = GameStatus.playerXwin
+        //flags
+        var isFilled:Bool = true
+        var xCount:Int = 0
+        var oCount:Int = 0
+        
+        //check each row:
+        for i in 0...2 {
+            for j in 0...2 {
+                let realIndex:Int = i*3 + j
+                let value:UInt8 = spaces[realIndex]
                 
+                //check value
+                if(value == UInt8(1)) {
+                    xCount += 1
+                }
+                else if(value == UInt8(2)) {
+                    oCount += 1
+                }
+                else {
+                    //no possibility of tie game
+                    isFilled = false
+                    
+                    //since space not filled ... row not worth checking
+                    break
+                }
             }
-            else if(spaces[0] == 2) {
-                status = GameStatus.playerOwin
-            }
-        }
-        if((spaces[3] == spaces[4] && spaces[4] == spaces[5])){
-            if(spaces[3] == 1) {
+            //check if row has winning combo
+            if(xCount == 3) {
                 status = GameStatus.playerXwin
+                //TODO: write to characteristic
             }
-            else if(spaces[3] == 2)  {
+            else if(oCount==3) {
                 status = GameStatus.playerOwin
+                //TODO: write to characteristic
             }
-        }
-        if((spaces[6] == spaces[7] && spaces[7] == spaces[8])){
-            if(spaces[6] == 1) {
-                status = GameStatus.playerXwin
-            }
-            else if(spaces[6] == 2)  {
-                status = GameStatus.playerOwin
-            }
+            //else zero out counts
+            xCount = 0
+            oCount = 0
         }
         
-        //TODO columns and diagonals
-        
-        if((spaces[0] == spaces[1] && spaces[1] == spaces[2])){
-            if(spaces[0] == 1) {
-                status = GameStatus.playerXwin
+        //check each column
+        for m in 0...2 {
+            for n in 0...2 {
+                let realIndex:Int = m + n*3
+                let value:UInt8 = spaces[realIndex]
                 
+                //check value
+                if(value == UInt8(1)) {
+                    xCount += 1
+                }
+                else if(value == UInt8(2)) {
+                    oCount += 1
+                }
+                else {
+                    //no possibility of tie game
+                    isFilled = false
+                    
+                    //since space not filled ... row not worth checking
+                    break
+                }
             }
-            else if(spaces[0] == 2) {
-                status = GameStatus.playerOwin
-            }
-        }
-        if((spaces[3] == spaces[4] && spaces[4] == spaces[5])){
-            if(spaces[3] == 1) {
+            //check if row has winning combo
+            if(xCount == 3) {
                 status = GameStatus.playerXwin
+                //TODO: write to characteristic
             }
-            else if(spaces[3] == 2)  {
+            else if(oCount==3) {
                 status = GameStatus.playerOwin
+                //TODO: write to characteristic
             }
-        }
-        if((spaces[6] == spaces[7] && spaces[7] == spaces[8])){
-            if(spaces[6] == 1) {
-                status = GameStatus.playerXwin
-            }
-            else if(spaces[6] == 2)  {
-                status = GameStatus.playerOwin
-            }
+            //else zero out counts
+            xCount = 0
+            oCount = 0
         }
         
+        //check bottom left to top right diagonal (indices: 0 4 8)
+        for p in 0...2 {
+            let realIndex:Int = p*4
+            let value:UInt8 = spaces[realIndex]
+            
+            //check value
+            if(value == UInt8(1)) {
+                xCount += 1
+            }
+            else if(value == UInt8(2)) {
+                oCount += 1
+            }
+            else {
+                //no possibility of tie game
+                isFilled = false
+                
+                //since space not filled ... row not worth checking
+                break
+            }
+        }
         
+        //check if row has winning combo
+        if(xCount == 3) {
+            status = GameStatus.playerXwin
+            //TODO: write to characteristic
+        }
+        else if(oCount==3) {
+            status = GameStatus.playerOwin
+            //TODO: write to characteristic
+        }
+        //else zero out counts
+        xCount = 0
+        oCount = 0
         
+        //check top left to bottom right diagonal (indices: 6 4 2)
+        for q in 0...2 {
+            let realIndex:Int = 2+q*2
+            let value:UInt8 = spaces[realIndex]
+            
+            //check value
+            if(value == UInt8(1)) {
+                xCount += 1
+            }
+            else if(value == UInt8(2)) {
+                oCount += 1
+            }
+            else {
+                //no possibility of tie game
+                isFilled = false
+                
+                //since space not filled ... row not worth checking
+                break
+            }
+        }
         
-        //Tie Condition
+        //check if row has winning combo
+        if(xCount == 3) {
+            status = GameStatus.playerXwin
+            //TODO: write to characteristic
+        }
+        else if(oCount==3) {
+            status = GameStatus.playerOwin
+            //TODO: write to characteristic
+        }
+        //else zero out counts
+        xCount = 0
+        oCount = 0
         
+        ////////////////////////////////////////////////////////////////////////
         
-        //end: update game status characteristic
+        //check for tie condition:
+        if (isFilled) {
+            status = GameStatus.tie
+            //TODO: write to characteristic
+        }
+            
+            //else game is still ongoing
+        else if(status != GameStatus.inProgress) {
+            status = GameStatus.inProgress
+            //TODO: write to characteristic
+        }
         
     }
-    
-    
 }
