@@ -225,7 +225,8 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         }
         else if(characteristicUUID.isEqual(GameStatusCharacteristic?.uuid)){
             print("GameStatus Read Attempt")
-            request.value = GameStatusCharacteristic?.value
+            messageUpdate()
+            request.value = message
             peripheral.respond(to: request, withResult: .success)
         }
         else if(characteristicUUID.isEqual(BoardStateCharacteristic?.uuid)){
@@ -323,6 +324,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
         //we implemented this because game status characteristic updates were not working
         //try updating game status again
+        print("game status char 2nd update attempt")
         updateStatus()
     }
     
@@ -362,7 +364,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         payloadUpdate()
         if(thePeripheralManager.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
             print("Board update success")
-            
+            CurrentGame.checkGameStatus()
             updateStatus()
 //            CurrentGame.checkGameStatus()
 //            //check if need to update game status char:
@@ -386,7 +388,6 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     }
     
     public func updateStatus() {
-        CurrentGame.checkGameStatus()
         //check if need to update game status char:
         if (CurrentGame.statusChanged) {
             messageUpdate()

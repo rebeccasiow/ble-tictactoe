@@ -16,20 +16,20 @@ enum GameStatus {
     case inProgress
 }
 
-var CurrentGame = TicTacToeBoard()
+var CurrentGame = TicTacToeBoard()  //provide global reference to board for TTTViewController and DeviceScanPeripheral
 
+//REFERENCE:
 //Central/LightBlue - Player X
 //Peripheral/App - Player O
 
 class TicTacToeBoard {
     
-    var spaces : [UInt8] = [0,0,0,0,0,0,0,0,0]
-    var isPlayerX: Bool = true
+    var spaces : [UInt8] = [0,0,0,0,0,0,0,0,0]     //tictactoe board in array form: 0-8 indices corres. to 1-9 keypad input on LightBlue
+    var isPlayerX: Bool = true  //whose turn
     var status: GameStatus = GameStatus.notStarted
-    var statusChanged: Bool = false
+    var statusChanged: Bool = false   //conditional flag for characteristic update
     
     var playerXLastMove: Int = 0
-//    var playerOLastMove: UInt8 = 0
     
     func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
         let realIndex:Int = Int(index)-1
@@ -49,16 +49,12 @@ class TicTacToeBoard {
             spaces[realIndex] = UInt8(2)
             print("Peripheral move: board is now \(spaces)")
             isPlayerX = !isPlayerX
-            
-//            playerOLastMove = index-1
             NotificationCenter.default.post(name: Notification.Name(rawValue: PM_PM), object:nil)
             
             //view controller updates UI by itself
             return true
         }
-        
         return false
-        
     }
     
     
@@ -67,17 +63,13 @@ class TicTacToeBoard {
     //else game still ongoing
     func checkGameStatus() {
         
-        //board ui layout:
-        //789
-        //456
-        //123
+        //board ui layout:      //board logic layout
+        //789                   //678
+        //456                   //345
+        //123                   //012
         
-        //board logic layout
-        //678
-        //345
-        //012
         
-        //flags
+        //flags and counters
         var isFilled:Bool = true
         var xCount:Int = 0
         var oCount:Int = 0
@@ -99,24 +91,9 @@ class TicTacToeBoard {
                 else {
                     //no possibility of tie game
                     isFilled = false
-                    
-                    //since space not filled ... row not worth checking
-                    //break
                 }
             }
-            //check if row has winning combo
-            if(xCount == 3) {
-                status = GameStatus.playerXwin
-                //TODO: write to characteristic
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-                statusChanged = true
-                return
-            }
-            else if(oCount==3) {
-                status = GameStatus.playerOwin
-                //TODO: write to characteristic
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-                statusChanged = true
+            if(checkForWin(xCount: xCount, oCount: oCount)) {
                 return
             }
             //else zero out counts
@@ -144,24 +121,9 @@ class TicTacToeBoard {
                 else {
                     //no possibility of tie game
                     isFilled = false
-                    
-                    //since space not filled ... row not worth checking
-                    //break
                 }
             }
-            //check if row has winning combo
-            if(xCount == 3) {
-                status = GameStatus.playerXwin
-                //TODO: write to characteristic
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-                statusChanged = true
-                return
-            }
-            else if(oCount==3) {
-                status = GameStatus.playerOwin
-                //TODO: write to characteristic
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-                statusChanged = true
+            if(checkForWin(xCount: xCount, oCount: oCount)) {
                 return
             }
             //else zero out counts
@@ -188,25 +150,10 @@ class TicTacToeBoard {
             else {
                 //no possibility of tie game
                 isFilled = false
-                
-                //since space not filled ... row not worth checking
-                //break
             }
         }
         
-        //check if row has winning combo
-        if(xCount == 3) {
-            status = GameStatus.playerXwin
-            //TODO: write to characteristic
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-            statusChanged = true
-            return
-        }
-        else if(oCount==3) {
-            status = GameStatus.playerOwin
-            //TODO: write to characteristic
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-            statusChanged = true
+        if(checkForWin(xCount: xCount, oCount: oCount)) {
             return
         }
         //else zero out counts
@@ -229,38 +176,19 @@ class TicTacToeBoard {
             else {
                 //no possibility of tie game
                 isFilled = false
-                
-                //since space not filled ... row not worth checking
-                //break
             }
         }
         
-        //check if row has winning combo
-        if(xCount == 3) {
-            status = GameStatus.playerXwin
-            //TODO: write to characteristic
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-            statusChanged = true
+        if(checkForWin(xCount: xCount, oCount: oCount)) {
             return
         }
-        else if(oCount==3) {
-            status = GameStatus.playerOwin
-            //TODO: write to characteristic
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
-            statusChanged = true
-            return
-        }
-        //else zero out counts
-        xCount = 0
-        oCount = 0
         
-        ////////////////////////////////////////////////////////////////////////
+        //////End Board Checks//////
         
         //check for tie condition:
         if (isFilled) {
             print ("tie game determined")
             status = GameStatus.tie
-            //TODO: write to characteristic
             NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
             statusChanged = true
             return
@@ -270,11 +198,26 @@ class TicTacToeBoard {
         else if(status != GameStatus.inProgress) {
             print ("setting game to in progress")
             status = GameStatus.inProgress
-            //TODO: write to characteristic
             NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
             statusChanged = true
             return
         }
         
+    }
+    
+    func checkForWin(xCount: Int, oCount: Int) -> Bool {
+        if(xCount == 3) {
+            status = GameStatus.playerXwin
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return true
+        }
+        else if(oCount==3) {
+            status = GameStatus.playerOwin
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
+            statusChanged = true
+            return true
+        }
+        return false
     }
 }
