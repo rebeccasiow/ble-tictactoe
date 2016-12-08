@@ -9,12 +9,15 @@
 import UIKit
 import CoreBluetooth
 
-
 /**
+ TODO:
  
+ 1. Board logic
+ 2. Writing to Characteristic
  
  
  **/
+
 
 /**
  Creating Custom UUIDs for our TicTacToe Service
@@ -25,13 +28,13 @@ let BoardStateCharUUID = CBUUID(string: "994416DF-115E-406E-AE40-DD4261D7FCAC")
 let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
 let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
 
+var payload = Data(bytes: CurrentGame.spaces)
 
 class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     
-    fileprivate var thePeripheralManager: CBPeripheralManager?
+    var thePeripheralManager: CBPeripheralManager!
     
     var TicTacToeService:CBMutableService = CBMutableService(type: TicTacToeServiceUUID, primary: true)
-    
     var BoardStateCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: BoardStateCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
     var PlayerMoveCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write, .notify], value:nil, permissions: [.readable, .writeable])
@@ -47,12 +50,10 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
         print("DeviceScan Peripheral init")
         thePeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        advertisementData["CBAdvertisementDataLocalNameKey"] = "TTTPeripheral"
-        advertisementData["CBAdvertisementDataServiceUUIDsKey"] = "6BC2F6D4-570C-4709-81FD-3535F128CAD7"
+        advertisementData = [CBAdvertisementDataLocalNameKey: "TTTPeripheral", CBAdvertisementDataServiceUUIDsKey:[TicTacToeServiceUUID]]
         
         TicTacToeService.characteristics = [BoardStateCharacteristic!, PlayerMoveCharacteristic!, GameStatusCharacteristic!]
         
-        thePeripheralManager?.add(TicTacToeService)
         
     }
     
@@ -90,10 +91,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
             
         case .poweredOn:
             print("Peripheral Powered On/Started Advertising")
-            thePeripheralManager?.startAdvertising(advertisementData)
+            thePeripheralManager.add(TicTacToeService)
+            thePeripheralManager.startAdvertising(advertisementData)
             
         case .resetting:
-            thePeripheralManager?.stopAdvertising()
+            thePeripheralManager.stopAdvertising()
             
         case .unsupported:
             break
@@ -129,7 +131,14 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
-    
+        print("peripheralManagerDidStartAdvertising")
+        
+            if let error = error {
+                print("Failed… error: \(error)")
+                return
+            }
+            print("Succeeded!")
+        
     }
     
     
@@ -145,6 +154,13 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, didAdd service: CBService, error: Error?){
+        print("didAddService")
+        
+        if let error = error {
+            print("Service Add Failed: \(error)")
+            return
+        }
+        print("Service:\(service)")
         
     
     }
@@ -162,8 +178,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic){
-        
-        
+        //print("subscribed centrals: \( characteristic)")
     }
     
     
@@ -196,8 +211,24 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
-    
-    
+        
+        print("didReceiveRead")
+        
+        let characteristicUUID = request.characteristic.uuid
+        
+        if(characteristicUUID.isEqual(PlayerMoveCharacteristic)){
+            request.value = PlayerMoveCharacteristic?.value
+            peripheral.respond(to: request, withResult: .success)
+        }
+        else if(characteristicUUID.isEqual(GameStatusCharacteristic)){
+            request.value = GameStatusCharacteristic?.value
+            peripheral.respond(to: request, withResult: .success)
+        }
+        else if(characteristicUUID.isEqual(BoardStateCharacteristic)){
+            payloadUpdate()
+            request.value = payload
+            peripheral.respond(to: request, withResult: .success)
+        }
     }
     
     /*!
@@ -215,43 +246,49 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
      *
      */
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
+        
+        print("DidReceiveWrite")
         //Send Notification when it is peripheral's turn
-        var request:CBATTRequest = requests.first!
-        
-        if request.characteristic == PlayerMoveCharacteristic {
-            // Convert the revived NSData to array of signed 16 bit values
-            guard let byteWritten = request.value else {
-                print("Null Data Received")
-                //reprompt?
-                return
+        for request in requests {
+            if request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid) {
+                guard let byteWritten = request.value else {
+                    print("Null Data Received")
+                    //reprompt?
+                    return
+                }
+                
+                //single byte of position in 0-8 array
+//                let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
+                
+                var byteInt: UInt8 = byteWritten.first!
+                print("byteInt: \(byteInt)")
+                
+                //inputting board coord
+                if(byteInt < 0 || byteInt > 8) {
+                    print("Input out of range. 1 for player X, 2 for player O")
+                    //reprompt?
+                    return
+                }
+                
+                //update game
+                let moveSuccess = CurrentGame.playerMoved(index: byteInt, isPlayerXPlaying: false)
+                if(moveSuccess) {
+                    PlayerMoveCharacteristic?.value = byteWritten
+                    peripheral.respond(to: request, withResult: .success)
+                    payloadUpdate()
+                    
+                    if(peripheral.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
+                        print("Board update success")
+                    }
+                    else {
+                        print("Board char failed to update")
+                    }
+                }
+                else {
+                    peripheral.respond(to: request, withResult: .writeNotPermitted)
+                }
             }
-            
-            //single byte of position in 0-8 array
-            let byteInt: UInt8 = byteWritten.withUnsafeBytes{$0.pointee}
-            
-            //inputting board coord
-            if(byteInt < 0 || byteInt > 8) {
-                print("Input out of range. 1 for player X, 2 for player O")
-                //reprompt?
-                return
-            }
-            
-            //update game
-            CurrentGame.playerMoved(byteWritten: byteInt, isPlayerXPlaying: false)
-            
-            
-            //CurrentGame.playerMove(isPlayerX: CurrentGame.isPlayerX, coord: Int(byteInt))
-            //CurrentGame.checkGameStatus()
-            
-            //write to characteristic
-            //board state, game status
-            
-
-            moveNotif = true
-            
-            //parse the data received and display where you want
-        
-    
+        }
     }
         /*!
          *  @method peripheralManagerIsReadyToUpdateSubscribers:
@@ -263,6 +300,11 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
          *
          */
         
-        public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
-        }
+    public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
+    }
+    
+    public func payloadUpdate() {
+        print("board is now: \(CurrentGame.spaces)")
+        payload = Data(bytes: CurrentGame.spaces)
+    }
 }

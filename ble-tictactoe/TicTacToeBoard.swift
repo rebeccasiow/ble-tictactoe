@@ -23,31 +23,32 @@ var CurrentGame = TicTacToeBoard()
 
 class TicTacToeBoard {
     
-    var spaces = [Int?]()
+    var spaces : [UInt8] = [0,0,0,0,0,0,0,0,0]
     var isPlayerX: Bool = true
     var status: GameStatus = GameStatus.notStarted
     
-    func playerMoved(byteWritten: UInt8, isPlayerXPlaying: Bool) {
-        
-        let index = Int(byteWritten)
-        
-        if((spaces[index]) != nil){
+    func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
+        let realIndex:Int = Int(index)
+        if((spaces[realIndex]) == 0){
             //Tell peripheral NO
+            return false
         }
         if(isPlayerX && isPlayerXPlaying) {
-            spaces[index] = 1
+            spaces[realIndex] = 1
             isPlayerX = !isPlayerX
             //update view controller UI
-            //write to characteristic
+            
+            return true
         }
         else if( (!isPlayerX) && (!isPlayerXPlaying) ) {
-            spaces[index] = 2
+            spaces[realIndex] = 2
             isPlayerX = !isPlayerX
             //update view controller UI
-            //write to characteristic
+            return true
         }
         else {
             // Nothing happens/Not Your Turn
+            return false
         }
         
     }

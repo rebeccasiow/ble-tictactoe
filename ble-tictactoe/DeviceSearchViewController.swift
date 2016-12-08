@@ -7,12 +7,20 @@
 //
 
 import UIKit
+import CoreBluetooth
+
+var currentDeviceScanPeripheral = DeviceScanPeripheral()
 
 
 class DeviceSearchViewController: UIViewController {
 
+    
+    
     override func viewDidLoad() {
+        print("DeviceScan")
         super.viewDidLoad()
+        currentDeviceScanPeripheral = DeviceScanPeripheral()
+
 
         // Do any additional setup after loading the view.
     }
