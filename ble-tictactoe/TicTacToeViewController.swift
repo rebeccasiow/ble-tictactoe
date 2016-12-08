@@ -37,8 +37,8 @@ class TicTacToeViewController: UIViewController {
         let moveSuccess: Bool = CurrentGame.playerMoved(index: UInt8(sender.tag), isPlayerXPlaying: false)
         
         if(moveSuccess) {
-            sender.imageView?.image = UIImage(contentsOfFile: "x.png")
-            playerStatusMessage.text = "You placed a piece!"
+            sender.setImage(UIImage(named: "o.png"), for: .normal)
+                        playerStatusMessage.text = "You placed a piece!"
         } else {
             playerStatusMessage.text = "Not Your Turn!"
         }
@@ -50,9 +50,17 @@ class TicTacToeViewController: UIViewController {
         playerTurnLabel.isHidden = false
         appPlayerTurn.isHidden = false
         
+        gameStatusMessage.text = "Game In Progress"
         
-        
-        
+        space1.setImage(nil, for: .normal)
+        space2.setImage(nil, for: .normal)
+        space3.setImage(nil, for: .normal)
+        space4.setImage(nil, for: .normal)
+        space5.setImage(nil, for: .normal)
+        space6.setImage(nil, for: .normal)
+        space7.setImage(nil, for: .normal)
+        space8.setImage(nil, for: .normal)
+        space9.setImage(nil, for: .normal)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +75,7 @@ class TicTacToeViewController: UIViewController {
         playerTurnLabel.isHidden = true
         appPlayerTurn.isHidden = true
         
+        
     }
     
     func updateGameCharacteristics() {
@@ -75,7 +84,18 @@ class TicTacToeViewController: UIViewController {
     
     func playerMove(isPlayerX: Bool, coord: Int){
         
+        
+        
         }
+    
+    func centralPlayed(index: Int) {
+        print("Central Played on Space \(index)")
+        
+        let button = self.view.viewWithTag(index) as! UIButton
+        
+            button.setImage(UIImage(named: "x.png"), for: .normal)
+        
+    }
 
 
     override func didReceiveMemoryWarning() {
