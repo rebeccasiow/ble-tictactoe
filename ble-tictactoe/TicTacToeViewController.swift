@@ -8,6 +8,7 @@
 
 import UIKit
 
+var TTTVC = TicTacToeViewController()
 class TicTacToeViewController: UIViewController {
 
 
@@ -78,7 +79,23 @@ class TicTacToeViewController: UIViewController {
         
     }
     
-    func updateGameCharacteristics() {
+    func updateGameStatusMessage(gs:GameStatus) {
+        
+        switch gs {
+        case .inProgress:
+            gameStatusMessage.text = "Game In Progress"
+        case .notStarted:
+            gameStatusMessage.text = "Game Not Started"
+        case .playerOwin:
+            gameStatusMessage.text = "Player O won!"
+        case .playerXwin:
+            gameStatusMessage.text = "Player X won!"
+        case .tie:
+            gameStatusMessage.text = "Game Tie!"
+        default:
+            gameStatusMessage.text = ""
+
+        }
     
     }
     

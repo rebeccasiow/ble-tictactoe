@@ -29,6 +29,7 @@ let PlayerMoveCharUUID = CBUUID(string: "1D386F1E-FFA6-4FE3-BCE1-FE93DB2FC2B3")
 let GameStatusCharUUID = CBUUID(string: "7666BFE8-B201-45B7-8FAB-0C95A9A9A1F3")
 
 var payload = Data(bytes: CurrentGame.spaces)
+var message = Data(bytes: [0, CurrentGame.isPlayerX ? 1:2, 1])    //1st: game status enum; 2nd: whose_turn; 3rd: who_am_i
 
 class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     
@@ -38,6 +39,7 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     var BoardStateCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: BoardStateCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
     var PlayerMoveCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: PlayerMoveCharUUID, properties: [.write, .notify], value:nil, permissions: [.readable, .writeable])
+    
     
     var GameStatusCharacteristic: CBMutableCharacteristic? = CBMutableCharacteristic(type: GameStatusCharUUID, properties: [.read, .notify], value:nil, permissions: .readable)
     
@@ -283,6 +285,18 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
                     if(peripheral.updateValue(payload, for: BoardStateCharacteristic!, onSubscribedCentrals: nil)) {
                         print("Board update success")
                         CurrentGame.checkGameStatus()
+                        //check if need to update game status char:
+                        if (CurrentGame.statusChanged) {
+                            messageUpdate()
+                            if(peripheral.updateValue(message, for: GameStatusCharacteristic!, onSubscribedCentrals: nil)) {
+                                print("Game status updated to: \(CurrentGame.status)")
+                            }
+                            else {
+                                print("Game status update fail")
+                            }
+                            //reset flag
+                            CurrentGame.statusChanged = false
+                        }
                     }
                     else {
                         print("Board char failed to update")
@@ -307,8 +321,32 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager){
     }
     
+    //updates the uint8 array for boardstatechar
     public func payloadUpdate() {
         print("board is now: \(CurrentGame.spaces)")
         payload = Data(bytes: CurrentGame.spaces)
     }
+    public func messageUpdate() {
+        
+        var statusValue : UInt8
+        
+        switch CurrentGame.status {
+        case GameStatus.notStarted:
+            statusValue = 0
+        case GameStatus.playerXwin:
+            statusValue = 1
+        case GameStatus.playerOwin:
+            statusValue = 2
+        case GameStatus.tie:
+            statusValue = 3
+        case GameStatus.inProgress:
+            statusValue = 4
+        default:
+            statusValue = 9 //unknown
+            break
+        }
+        
+        message = Data(bytes: [statusValue, CurrentGame.isPlayerX ? 1:2, 1])
+    }
+    
 }
