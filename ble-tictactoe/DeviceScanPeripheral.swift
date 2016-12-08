@@ -9,7 +9,6 @@
 import UIKit
 import CoreBluetooth
 
-
 /**
  TicTacToeService Setup: Creating Custom UUIDs for our TicTacToe Service
  **/

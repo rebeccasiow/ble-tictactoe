@@ -14,8 +14,6 @@ var currentDeviceScanPeripheral = DeviceScanPeripheral()
 
 class DeviceSearchViewController: UIViewController {
 
-    
-    
     override func viewDidLoad() {
         print("DeviceScan")
         super.viewDidLoad()

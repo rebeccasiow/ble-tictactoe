@@ -47,6 +47,7 @@ class TicTacToeViewController: UIViewController {
         }
         
     }
+    
     @IBAction func startGameButtonPressed(_ sender: UIButton) {
         startGameButton.isHidden = true
         playerStatusMessage.isHidden = false
@@ -65,6 +66,7 @@ class TicTacToeViewController: UIViewController {
         space8.setImage(nil, for: .normal)
         space9.setImage(nil, for: .normal)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("TicTacToeViewController viewDidLoad")
@@ -83,6 +85,9 @@ class TicTacToeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(TicTacToeViewController.updateGameStatusMessage), name: NSNotification.Name(rawValue: TTTVC_GS), object: nil)
     }
     
+    /**
+     Updates Game Status Message on UI
+     **/
     func updateGameStatusMessage() {
         switch CurrentGame.status {
         case .inProgress:
@@ -101,12 +106,7 @@ class TicTacToeViewController: UIViewController {
         }
     }
     
-    func playerMove(isPlayerX: Bool, coord: Int){
-        
-        
-        
-        }
-    
+    /** Updates UI if Central Played **/
     func centralPlayed() {
         
         let index:Int = CurrentGame.playerXLastMove

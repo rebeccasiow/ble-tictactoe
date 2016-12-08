@@ -26,7 +26,7 @@ class TicTacToeBoard {
     
     var spaces : [UInt8] = [0,0,0,0,0,0,0,0,0]     //tictactoe board in array form: 0-8 indices corres. to 1-9 keypad input on LightBlue
     var isPlayerX: Bool = true  //whose turn
-    var status: GameStatus = GameStatus.notStarted
+    var status: GameStatus = GameStatus.notStarted  //enum for Game Status
     var statusChanged: Bool = false   //conditional flag for characteristic update
     
     var playerXLastMove: Int = 0
@@ -50,38 +50,27 @@ class TicTacToeBoard {
             print("Peripheral move: board is now \(spaces)")
             isPlayerX = !isPlayerX
             NotificationCenter.default.post(name: Notification.Name(rawValue: PM_PM), object:nil)
-            
-            //view controller updates UI by itself
             return true
         }
         return false
     }
     
-    
-    //if three in a row, someone wins
-    //if all spaces taken and no win condition = tie
-    //else game still ongoing
+    /** Checks Game Status **/
     func checkGameStatus() {
         
-        //board ui layout:      //board logic layout
-        //789                   //678
-        //456                   //345
-        //123                   //012
+        //789
+        //456
+        //123
         
-        
-        //flags and counters
         var isFilled:Bool = true
         var xCount:Int = 0
         var oCount:Int = 0
         
-        //check each row:
-        print("checking rows")
         for i in 0...2 {
             for j in 0...2 {
                 let realIndex:Int = i*3 + j
                 let value:UInt8 = spaces[realIndex]
                 
-                //check value
                 if(value == UInt8(1)) {
                     xCount += 1
                 }
@@ -89,14 +78,12 @@ class TicTacToeBoard {
                     oCount += 1
                 }
                 else {
-                    //no possibility of tie game
                     isFilled = false
                 }
             }
             if(checkForWin(xCount: xCount, oCount: oCount)) {
                 return
             }
-            //else zero out counts
             xCount = 0
             oCount = 0
         }
@@ -104,14 +91,11 @@ class TicTacToeBoard {
         xCount = 0
         oCount = 0
         
-        //check each column
-        print("checking columns")
         for m in 0...2 {
             for n in 0...2 {
                 let realIndex:Int = m + n*3
                 let value:UInt8 = spaces[realIndex]
                 
-                //check value
                 if(value == UInt8(1)) {
                     xCount += 1
                 }
@@ -119,14 +103,12 @@ class TicTacToeBoard {
                     oCount += 1
                 }
                 else {
-                    //no possibility of tie game
                     isFilled = false
                 }
             }
             if(checkForWin(xCount: xCount, oCount: oCount)) {
                 return
             }
-            //else zero out counts
             xCount = 0
             oCount = 0
         }
@@ -134,13 +116,10 @@ class TicTacToeBoard {
         xCount = 0
         oCount = 0
         
-        //check bottom left to top right diagonal (indices: 0 4 8)
-        print("checking diagonal 1")
         for p in 0...2 {
             let realIndex:Int = p*4
             let value:UInt8 = spaces[realIndex]
             
-            //check value
             if(value == UInt8(1)) {
                 xCount += 1
             }
@@ -148,7 +127,6 @@ class TicTacToeBoard {
                 oCount += 1
             }
             else {
-                //no possibility of tie game
                 isFilled = false
             }
         }
@@ -156,17 +134,13 @@ class TicTacToeBoard {
         if(checkForWin(xCount: xCount, oCount: oCount)) {
             return
         }
-        //else zero out counts
         xCount = 0
         oCount = 0
         
-        //check top left to bottom right diagonal (indices: 6 4 2)
-        print("checking diagonal 2")
         for q in 0...2 {
             let realIndex:Int = 2+q*2
             let value:UInt8 = spaces[realIndex]
             
-            //check value
             if(value == UInt8(1)) {
                 xCount += 1
             }
@@ -174,7 +148,6 @@ class TicTacToeBoard {
                 oCount += 1
             }
             else {
-                //no possibility of tie game
                 isFilled = false
             }
         }
@@ -183,20 +156,14 @@ class TicTacToeBoard {
             return
         }
         
-        //////End Board Checks//////
-        
-        //check for tie condition:
         if (isFilled) {
-            print ("tie game determined")
             status = GameStatus.tie
             NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
             statusChanged = true
             return
         }
             
-            //else game is still ongoing
         else if(status != GameStatus.inProgress) {
-            print ("setting game to in progress")
             status = GameStatus.inProgress
             NotificationCenter.default.post(name: Notification.Name(rawValue: TTTVC_GS), object:nil)
             statusChanged = true
@@ -204,6 +171,8 @@ class TicTacToeBoard {
         }
         
     }
+    
+    /** Checks for winning placement **/
     
     func checkForWin(xCount: Int, oCount: Int) -> Bool {
         if(xCount == 3) {
