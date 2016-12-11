@@ -92,7 +92,6 @@
 				B23F6B471DF08947004CB8F9 /* Assets.xcassets */,
 				B23F6B4C1DF08947004CB8F9 /* Info.plist */,
 				B23F6B401DF08947004CB8F9 /* AppDelegate.swift */,
-				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
 				B23F6B491DF08947004CB8F9 /* LaunchScreen.storyboard */,
 				B23F6B421DF08947004CB8F9 /* ViewController.swift */,
 				B23F6B701DF091C1004CB8F9 /* o.png */,
@@ -126,6 +125,7 @@
 			children = (
 				B21A20E31DF97FDE00EC899A /* App Setup */,
 				B235D7351DF7931900790881 /* DeviceScanPeripheral.swift */,
+				B23F6B441DF08947004CB8F9 /* Main.storyboard */,
 				B235D7371DF7A39B00790881 /* TicTacToeBoard.swift */,
 				B23F6B6E1DF08F99004CB8F9 /* DeviceSearchViewController.swift */,
 				B2005F121DF635FD0080F481 /* TicTacToeViewController.swift */,

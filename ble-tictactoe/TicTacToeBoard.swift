@@ -31,7 +31,13 @@ class TicTacToeBoard {
     
     var playerXLastMove: Int = 0
     
+    
     func playerMoved(index: UInt8, isPlayerXPlaying: Bool) -> Bool {
+        
+        if(status == GameStatus.notStarted){
+            return false
+        } 
+        
         let realIndex:Int = Int(index)-1
         if((spaces[realIndex]) != UInt8(0)){
             print("space is taken")

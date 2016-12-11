@@ -169,14 +169,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Not Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abv-o1-Kcu">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Not Started" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abv-o1-Kcu">
                                 <rect key="frame" x="195" y="614" width="139" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="139" id="P26-lY-9do"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are Player X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ymh-4U-3HN">
-                                <rect key="frame" x="125" y="449" width="124" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are Player O" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ymh-4U-3HN">
+                                <rect key="frame" x="125" y="449" width="126" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -188,11 +191,18 @@
                                     <action selector="startGameButtonPressed:" destination="Adg-9r-5c5" eventType="touchUpInside" id="8td-DK-RJO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="9" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fvb-jm-odY">
+                            <button opaque="NO" tag="9" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fvb-jm-odY">
                                 <rect key="frame" x="253" y="96" width="98" height="88"/>
                                 <state key="normal" image="o.png"/>
                                 <connections>
                                     <action selector="playerMoved:" destination="Adg-9r-5c5" eventType="touchUpInside" id="pZM-Hi-s1f"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iea-7u-1bw">
+                                <rect key="frame" x="205" y="487" width="146" height="30"/>
+                                <state key="normal" title="NEW GAME JEFFREY"/>
+                                <connections>
+                                    <action selector="startGameButtonPressed:" destination="Adg-9r-5c5" eventType="touchUpInside" id="0Kp-ml-BMd"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -214,10 +224,13 @@
                             <constraint firstItem="abv-o1-Kcu" firstAttribute="leading" secondItem="nSq-al-Gz1" secondAttribute="trailing" constant="38" id="Kd2-u3-9W5"/>
                             <constraint firstItem="zga-hb-HxS" firstAttribute="top" secondItem="AGv-LW-aPA" secondAttribute="bottom" constant="11" id="MM5-pj-gfd"/>
                             <constraint firstItem="Fvb-jm-odY" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="76" id="N2X-G2-XkD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Fvb-jm-odY" secondAttribute="trailing" constant="8" id="OX9-er-VnT"/>
                             <constraint firstItem="nSq-al-Gz1" firstAttribute="leading" secondItem="BQT-VQ-NJN" secondAttribute="leadingMargin" constant="37" id="RjC-iZ-jsc"/>
                             <constraint firstItem="b6Q-ad-dFe" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="76" id="SVR-aL-UKd"/>
+                            <constraint firstItem="Iea-7u-1bw" firstAttribute="top" secondItem="Xce-CP-eKy" secondAttribute="bottom" constant="63" id="SaJ-N3-0wO"/>
                             <constraint firstItem="DFF-4i-euL" firstAttribute="leading" secondItem="zga-hb-HxS" secondAttribute="trailing" constant="4" id="TZT-gf-szv"/>
                             <constraint firstItem="Fug-aa-SKn" firstAttribute="leading" secondItem="BQT-VQ-NJN" secondAttribute="leadingMargin" constant="37" id="b9g-HN-7Mp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Iea-7u-1bw" secondAttribute="trailing" constant="8" id="b9k-Pc-B8b"/>
                             <constraint firstItem="DFF-4i-euL" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="70" id="cB2-jG-HUC"/>
                             <constraint firstItem="nSq-al-Gz1" firstAttribute="top" secondItem="Fug-aa-SKn" secondAttribute="bottom" constant="42" id="cab-eo-4h5"/>
                             <constraint firstItem="6os-6S-oy5" firstAttribute="top" secondItem="Zb0-QQ-QlS" secondAttribute="bottom" constant="13" id="g7o-ZW-jhl"/>
@@ -242,6 +255,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="NewGameButton" destination="Iea-7u-1bw" id="wD4-G0-RQQ"/>
                         <outlet property="appPlayerTurn" destination="Ymh-4U-3HN" id="iDa-h2-3TX"/>
                         <outlet property="gameStatusMessage" destination="abv-o1-Kcu" id="3zU-fT-7ld"/>
                         <outlet property="playerStatusMessage" destination="Fug-aa-SKn" id="2HK-M1-61h"/>
@@ -255,7 +269,7 @@
                         <outlet property="space7" destination="Zb0-QQ-QlS" id="si6-XR-QHj"/>
                         <outlet property="space8" destination="b6Q-ad-dFe" id="Whi-jm-2ip"/>
                         <outlet property="space9" destination="Fvb-jm-odY" id="6yT-YP-PKD"/>
-                        <outlet property="startGameButton" destination="U5Y-xN-yEa" id="Eiw-Yv-lLh"/>
+                        <outlet property="startGameButton" destination="U5Y-xN-yEa" id="2ln-fV-v5D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8m-Ld-OUu" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -11,9 +11,10 @@ import UIKit
 let TTTVC_CM = "TTTVC.CentralMovedNotificationKey"
 let TTTVC_GS = "TTTVC.GameStatusNotificationKey"
 
+
+
 class TicTacToeViewController: UIViewController {
-
-
+    
     @IBOutlet weak var space7: UIButton!
     @IBOutlet weak var space8: UIButton!
     @IBOutlet weak var space9: UIButton!
@@ -32,8 +33,10 @@ class TicTacToeViewController: UIViewController {
     @IBOutlet weak var playerStatusMessage: UILabel!
     
     @IBOutlet weak var gameStatusMessage: UILabel!
-    
     @IBOutlet weak var startGameButton: UIButton!
+    
+    @IBOutlet weak var NewGameButton: UIButton!
+    
     @IBAction func playerMoved(_ sender: UIButton) {
         print("\(sender.tag) Button Pressed")
         
@@ -49,11 +52,19 @@ class TicTacToeViewController: UIViewController {
     }
     
     @IBAction func startGameButtonPressed(_ sender: UIButton) {
+        NewGameStarted()
+    }
+    
+    func NewGameStarted() {
+        print("New Game Started")
         startGameButton.isHidden = true
         playerStatusMessage.isHidden = false
         playerTurnLabel.isHidden = false
         appPlayerTurn.isHidden = false
+        NewGameButton.isHidden = true
         
+        playerTurnLabel.text = "Player X's Turn"
+        playerStatusMessage.text = "Started game!"
         gameStatusMessage.text = "Game In Progress"
         
         space1.setImage(nil, for: .normal)
@@ -65,17 +76,16 @@ class TicTacToeViewController: UIViewController {
         space7.setImage(nil, for: .normal)
         space8.setImage(nil, for: .normal)
         space9.setImage(nil, for: .normal)
+        
+        CurrentGame = TicTacToeBoard()
+        CurrentGame.status = GameStatus.inProgress
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("TicTacToeViewController viewDidLoad")
         // Do any additional setup after loading the view.
-        
-        //while(CurrentGame.status !=  GameStatus.playerOwin) {
-            
-        //}
-        
+        NewGameButton.isHidden = true
         playerStatusMessage.isHidden = true
         playerTurnLabel.isHidden = true
         appPlayerTurn.isHidden = true
@@ -96,10 +106,13 @@ class TicTacToeViewController: UIViewController {
             gameStatusMessage.text = "Game Not Started"
         case .playerOwin:
             gameStatusMessage.text = "Player O won!"
+            NewGameButton.isHidden = false
         case .playerXwin:
             gameStatusMessage.text = "Player X won!"
+            NewGameButton.isHidden = false
         case .tie:
             gameStatusMessage.text = "Game Tie!"
+            NewGameButton.isHidden = false
         default:
             gameStatusMessage.text = "???"
 
@@ -117,6 +130,9 @@ class TicTacToeViewController: UIViewController {
         
             button.setImage(UIImage(named: "x.png"), for: .normal)
         
+        gameStatusMessage.text = "Opponent Placed a Piece!"
+        playerStatusMessage.text = ""
+
     }
 
 
