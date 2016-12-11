@@ -205,6 +205,13 @@
                                     <action selector="startGameButtonPressed:" destination="Adg-9r-5c5" eventType="touchUpInside" id="0Kp-ml-BMd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Rebecca and Jeffrey's Bluetooth Low Energy TicTacToe!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddG-qI-8l0">
+                                <rect key="frame" x="16" y="80" width="343" height="361"/>
+                                <color key="backgroundColor" red="0.57661645321918553" green="1" blue="0.9965989006702527" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -213,6 +220,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Fug-aa-SKn" secondAttribute="trailing" constant="37" id="1SH-FF-i6F"/>
                             <constraint firstItem="b6Q-ad-dFe" firstAttribute="leading" secondItem="DFF-4i-euL" secondAttribute="trailing" constant="3" id="3WC-qd-409"/>
                             <constraint firstItem="abv-o1-Kcu" firstAttribute="top" secondItem="Ikn-88-I7U" secondAttribute="bottom" constant="190" id="4IO-aw-nnb"/>
+                            <constraint firstItem="ddG-qI-8l0" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="60" id="4s9-mB-2nW"/>
                             <constraint firstItem="6os-6S-oy5" firstAttribute="leading" secondItem="Jgt-Ru-HQt" secondAttribute="trailing" constant="-98" id="4ut-rq-ekE"/>
                             <constraint firstItem="FhV-6a-NvE" firstAttribute="top" secondItem="6os-6S-oy5" secondAttribute="bottom" constant="12" id="83f-ZZ-qgG"/>
                             <constraint firstItem="VL4-zk-GKk" firstAttribute="top" secondItem="AGv-LW-aPA" secondAttribute="bottom" constant="11" id="9sB-EF-8VV"/>
@@ -229,10 +237,13 @@
                             <constraint firstItem="b6Q-ad-dFe" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="76" id="SVR-aL-UKd"/>
                             <constraint firstItem="Iea-7u-1bw" firstAttribute="top" secondItem="Xce-CP-eKy" secondAttribute="bottom" constant="63" id="SaJ-N3-0wO"/>
                             <constraint firstItem="DFF-4i-euL" firstAttribute="leading" secondItem="zga-hb-HxS" secondAttribute="trailing" constant="4" id="TZT-gf-szv"/>
+                            <constraint firstItem="Ymh-4U-3HN" firstAttribute="top" secondItem="ddG-qI-8l0" secondAttribute="bottom" constant="8" id="Xvb-hw-cSX"/>
                             <constraint firstItem="Fug-aa-SKn" firstAttribute="leading" secondItem="BQT-VQ-NJN" secondAttribute="leadingMargin" constant="37" id="b9g-HN-7Mp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Iea-7u-1bw" secondAttribute="trailing" constant="8" id="b9k-Pc-B8b"/>
                             <constraint firstItem="DFF-4i-euL" firstAttribute="top" secondItem="0Ys-yd-dtg" secondAttribute="bottom" constant="70" id="cB2-jG-HUC"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ddG-qI-8l0" secondAttribute="leading" id="cOc-Rh-nrl"/>
                             <constraint firstItem="nSq-al-Gz1" firstAttribute="top" secondItem="Fug-aa-SKn" secondAttribute="bottom" constant="42" id="cab-eo-4h5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ddG-qI-8l0" secondAttribute="trailing" id="eay-QP-XKV"/>
                             <constraint firstItem="6os-6S-oy5" firstAttribute="top" secondItem="Zb0-QQ-QlS" secondAttribute="bottom" constant="13" id="g7o-ZW-jhl"/>
                             <constraint firstItem="Jgt-Ru-HQt" firstAttribute="top" secondItem="6os-6S-oy5" secondAttribute="bottom" constant="12" id="gYk-sU-Ttg"/>
                             <constraint firstItem="Xce-CP-eKy" firstAttribute="leading" secondItem="Ikn-88-I7U" secondAttribute="trailing" constant="3" id="hGR-qM-E6q"/>
@@ -255,6 +266,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="IntroView" destination="ddG-qI-8l0" id="EWq-e5-MrE"/>
                         <outlet property="NewGameButton" destination="Iea-7u-1bw" id="wD4-G0-RQQ"/>
                         <outlet property="appPlayerTurn" destination="Ymh-4U-3HN" id="iDa-h2-3TX"/>
                         <outlet property="gameStatusMessage" destination="abv-o1-Kcu" id="3zU-fT-7ld"/>

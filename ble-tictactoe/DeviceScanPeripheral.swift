@@ -263,6 +263,12 @@ class DeviceScanPeripheral: NSObject, CBPeripheralManagerDelegate {
 
         for request in requests {
             if (request.characteristic.uuid.isEqual(PlayerMoveCharacteristic?.uuid)) {
+                
+                if((CurrentGame.status == GameStatus.playerXwin)||(CurrentGame.status == GameStatus.playerOwin) || (CurrentGame.status == GameStatus.tie)) {
+                    peripheral.respond(to: request, withResult: .writeNotPermitted)
+                    return
+                }
+                
                 guard let byteWritten = request.value else {
                     print("Null Data Received")
                     return

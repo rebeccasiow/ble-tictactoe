@@ -37,7 +37,15 @@ class TicTacToeViewController: UIViewController {
     
     @IBOutlet weak var NewGameButton: UIButton!
     
+    @IBOutlet weak var IntroView: UILabel!
+    
     @IBAction func playerMoved(_ sender: UIButton) {
+        
+        if((CurrentGame.status == GameStatus.playerXwin)||(CurrentGame.status == GameStatus.playerOwin) || (CurrentGame.status == GameStatus.tie)) {
+            playerStatusMessage.text = "Game Over!"
+            return
+        }
+        
         print("\(sender.tag) Button Pressed")
         
         let moveSuccess: Bool = CurrentGame.playerMoved(index: UInt8(sender.tag), isPlayerXPlaying: false)
@@ -53,6 +61,7 @@ class TicTacToeViewController: UIViewController {
     
     @IBAction func startGameButtonPressed(_ sender: UIButton) {
         NewGameStarted()
+        IntroView.isHidden = true
     }
     
     func NewGameStarted() {
